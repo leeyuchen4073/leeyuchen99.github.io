@@ -4,29 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>李雨辰</title>
-<!-- 网站图标配置【可自定义】 -->
-<!-- favicon.ico：ICO格式包含多尺寸，适配浏览器标签栏/书签/地址栏（所有浏览器通用） -->
+<!-- 网站图标配置 -->
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
-<!-- favicon-96x96.png：96x96大尺寸PNG图标，Chrome/Firefox等现代浏览器优先使用（替代ICO） -->
 <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
-
-<!-- site.webmanifest：Web应用清单，统一配置所有图标/应用信息（移动端添加到桌面时读取） -->
 <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/site.webmanifest">
-
-<!-- 移动端桌面图标配置 -->
-<!-- apple-touch-icon.png：iOS设备（iPhone/iPad）添加到桌面时显示的应用式图标 -->
+<!-- 移动端/Windows图标适配 -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/apple-touch-icon.png">
-<!-- web-app-manifest-192x192.png：Android设备添加到桌面/PWA应用的192x192尺寸图标 -->
 <link rel="icon" type="image/png" sizes="192x192" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-192x192.png">
-<!-- web-app-manifest-512x512.png：PWA应用安装/启动画面的512x512大尺寸备用图标 -->
 <link rel="icon" type="image/png" sizes="512x512" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-512x512.png">
-
-<!-- Windows系统适配 -->
-<!-- favicon.svg：矢量图，Windows/Mac系统高分辨率屏幕下显示无模糊（兼容所有favicon场景） -->
 <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.svg">
-<!-- msapplication-TileImage：Windows开始菜单/磁贴显示的图标（复用96x96PNG，系统自动缩放至150x150） -->
 <meta name="msapplication-TileImage" content="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
-<meta name="msapplication-TileColor" content="#4158D0"> <!-- Windows磁贴背景色 -->
+<meta name="msapplication-TileColor" content="#4158D0">
 
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -89,10 +77,6 @@
     display:grid;place-items:center;
     color:#4158D0;
     font-size:24px;font-weight:bold;
-    /* 自定义头像：取消注释并替换链接
-    background-image: url(https://cdn.jsdelivr.net/gh/leeyuchen4073/你的仓库名/avatar.png); 
-    background-size:cover; 
-    background-position:center; */
   }
   .name{font-size:24px;margin-bottom:8px}
   .bio{opacity:.9;margin-bottom:24px}
@@ -103,6 +87,18 @@
     padding:14px;border-radius:12px;margin:10px 0;
   }
   .link:hover{background:rgba(255,255,255,0.3)}
+  /* 自动登录复选框样式 */
+  .auto-login{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    margin:8px 0 16px;
+    font-size:14px;
+  }
+  .auto-login input{
+    width:auto;
+    margin:0 8px 0 0;
+  }
 </style>
 </head>
 
@@ -111,6 +107,11 @@
   <div id="login">
     <h2>请输入密码</h2>
     <input type="password" id="pwd" placeholder="输入访问密码">
+    <!-- 新增自动登录复选框 -->
+    <div class="auto-login">
+      <input type="checkbox" id="autoLogin">
+      <label for="autoLogin">记住密码并自动登录</label>
+    </div>
     <button onclick="login()">进入主页</button>
     <div id="error"></div>
   </div>
@@ -129,26 +130,56 @@
 
 <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
 <script>
-// ====================== 【可自定义】======================
+// 自定义配置
 const SECRET_KEY      = "123456";     // 你的真实密码
-const ENCRYPTED_HTML  = "U2FsdGVkX1+o9QmHwFEsy5GQkH4m+N1rH0dFXpkJzJ4="; // 加密后的内容
-// ======================================================
+const ENCRYPTED_HTML  = "U2FsdGVkX1+o9QmHwFEsy5GQkH4m+N1rH0dFXpkJzJ4=";
 
+// DOM元素
 let error = document.getElementById('error');
 let pwdInput = document.getElementById('pwd');
+let autoLoginCheckbox = document.getElementById('autoLogin');
 
+// 页面加载：自动填充密码+自动登录
 window.onload = () => {
-  if(localStorage.getItem('logged') === 'true'){
+  // 读取本地保存的密码
+  const savedPwd = localStorage.getItem('savedPwd');
+  const isAutoLogin = localStorage.getItem('autoLogin') === 'true';
+  
+  // 填充密码到输入框
+  if(savedPwd) {
+    pwdInput.value = savedPwd;
+    autoLoginCheckbox.checked = isAutoLogin;
+  }
+
+  // 自动登录（勾选且有保存的密码）
+  if(isAutoLogin && savedPwd === SECRET_KEY) {
+    document.getElementById('login').style.display='none';
+    document.getElementById('content').style.display='block';
+    localStorage.setItem('logged','true');
+  } else if(localStorage.getItem('logged') === 'true') {
+    // 兼容原有登录状态
     document.getElementById('login').style.display='none';
     document.getElementById('content').style.display='block';
   }
+
+  // 回车登录
   pwdInput.addEventListener('keyup', e=>{ if(e.key==='Enter') login() });
 }
 
+// 登录逻辑
 function login(){
   let val = pwdInput.value.trim();
   if(val === SECRET_KEY){
     error.textContent = '';
+    // 保存密码/自动登录状态
+    if(autoLoginCheckbox.checked) {
+      localStorage.setItem('savedPwd', val);
+      localStorage.setItem('autoLogin', 'true');
+    } else {
+      localStorage.removeItem('savedPwd');
+      localStorage.removeItem('autoLogin');
+    }
+    // 更新登录状态
     localStorage.setItem('logged','true');
     document.getElementById('login').style.display='none';
     document.getElementById('content').style.display='block';
@@ -157,14 +188,19 @@ function login(){
   }
 }
 
+// 退出登录
 function logout(){
+  // 清除所有登录相关缓存
   localStorage.removeItem('logged');
+  localStorage.removeItem('savedPwd');
+  localStorage.removeItem('autoLogin');
+  // 重置界面
   document.getElementById('content').style.display='none';
   document.getElementById('login').style.display='block';
   error.textContent = '';
   pwdInput.value = '';
+  autoLoginCheckbox.checked = false;
 }
 </script>
 </body>
 </html>
-
