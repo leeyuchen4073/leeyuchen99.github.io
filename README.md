@@ -11,8 +11,7 @@
 ---
 
 ## 📖 关于本站
-- 🌍 主站：**https://www.leeyuchen.top**
-- 是一个集 **个人主页、加密访问、在线工具等** 于一体的私人网站仓库，基于 GitHub Pages 构建
+- 🌍 主站：**https://www.leeyuchen.top** 是一个集 **个人主页、加密访问、在线工具等** 于一体的私人网站仓库，基于 GitHub Pages 构建
 
 ---
 
