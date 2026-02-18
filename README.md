@@ -62,4 +62,20 @@
 
 ---
 
+## 📧 联系我
+- 📩 邮箱：**254036252@qq.com**
+- 👤 GitHub：**@i-Breathe**
+- 🌍 个人主页：**www.leeyuchen.top**
+
+---
+
 ## 📦 域名最佳配置（你现在这套就是最稳）
+
+---
+
+## 📄 License
+MIT License — 自由使用，欢迎 Star & Fork
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=4158D0&height=80&section=footer&fontSize=0">
+</p>
