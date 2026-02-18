@@ -29,22 +29,20 @@
 ## 🛠️ 内置工具列表
 
 <div align="center">
-
 <table>
   <tr>
     <td>
       <a href="https://www.leeyuchen.top/加密工具.html">
-        <img src="https://cdn-fusion.imgcdn.store/i/2024/9344b2add5e290b6.png" width="380">
+        <img src="https://readme-typing.vercel.app/api?icon=lock&title=加密工具&desc=文本加密/解密&title_color=4158D0&icon_color=4158D0&bg_color=0d1117&hide_border=true" width="320">
       </a>
     </td>
     <td>
       <a href="https://www.leeyuchen.top">
-        <img src="https://cdn-fusion.imgcdn.store/i/2024/21e58daf3b0a1bd6.png" width="380">
+        <img src="https://readme-typing.vercel.app/api?icon=home&title=个人主页&desc=LeeYuchen 的主页&title_color=6A67CE&icon_color=6A67CE&bg_color=0d1117&hide_border=true" width="320">
       </a>
     </td>
   </tr>
 </table>
-
 </div>
 
 | 工具 | 功能 | 状态 |
