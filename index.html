@@ -3,34 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>文件列表</title>
+<title>私人网盘</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,-apple-ui,Segoe UI,Roboto,sans-serif;background:#f6f6f6;padding:20px}
-.container{max-width:800px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px #0001}
-.item{padding:16px 20px;border-bottom:1px solid #eee;display:flex;align-items:center}
-.item:hover{background:#f9f9f9}
-.item a{color:#111;text-decoration:none;font-size:16px}
-.title{padding:20px;font-size:20px;font-weight:600;border-bottom:1px solid #eee;color:#222}
+body{background:#f4f4f6;font-family:system-ui,sans-serif;display:grid;place-items:center;height:100vh;padding:20px}
+.box{background:#fff;border-radius:16px;box-shadow:0 5px 20px #0002;padding:30px;width:100%;max-width:420px}
+h2{margin-bottom:20px;text-align:center;color:#333}
+input{width:100%;padding:14px 16px;border:1px solid #ddd;border-radius:10px;font-size:16px;margin-bottom:16px;outline:none}
+button{width:100%;padding:14px;background:#2d7ff9;color:white;border:none;border-radius:10px;font-size:16px}
+#files{display:none;margin-top:20px}
+.file{padding:12px 16px;background:#f8f9fa;border-radius:8px;margin-bottom:8px}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="title">文件列表 · OpenList 风格</div>
+<div class="box">
+<h2>私人网盘 · 请输入密码</h2>
+<input type="password" id="pwd" placeholder="请输入访问密码">
+<button onclick="check()">解锁查看</button>
 
-<div class="item">
-<a href="#">个人密码文档.txt</a>
+<div id="files">
+<div class="file">密码本.txt</div>
+<div class="file">私人照片.zip</div>
+<div class="file">重要文档.pdf</div>
+<div class="file">软件工具.exe</div>
 </div>
-<div class="item">
-<a href="#">壁纸合集.zip</a>
-</div>
-<div class="item">
-<a href="#">学习资料.pdf</a>
-</div>
-<div class="item">
-<a href="#">软件安装包.exe</a>
 </div>
 
-</div>
+<script>
+function check(){
+let p = document.getElementById('pwd').value
+if(p === '123456'){ // 你可以改密码
+document.getElementById('files').style.display='block'
+}}</script>
 </body>
 </html>
