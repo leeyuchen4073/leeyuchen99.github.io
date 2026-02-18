@@ -61,12 +61,6 @@
 
 ---
 
-## 📧 联系我
-- 👤 GitHub：**@leeyuchen4073**
-- 🌍 个人主页：**www.leeyuchen.top**
-- - 📩 邮箱：**254036252@qq.com**
-
----
 
 ## 📦 域名配置
 | 记录类型 | 主机记录 | 记录值                | TTL     |
@@ -80,8 +74,14 @@
 ---
 
 ## 📄 License
-MIT License — 个人自用专属,有事邮箱请联系
+MIT License — 个人自用专属,有事邮箱请↓↓↓
 
+## 📧 联系我
+- 👤 GitHub：**@leeyuchen4073**
+- 🌍 个人主页：**www.leeyuchen.top**
+- - 📩 邮箱：**254036252@qq.com**
+
+---
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=4158D0&height=80&section=footer&fontSize=0">
 </p>
