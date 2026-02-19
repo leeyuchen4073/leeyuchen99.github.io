@@ -1,195 +1,1431 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 字符编码声明：统一使用UTF-8避免中文乱码 -->
-<meta charset="UTF-8">
-<!-- 视口配置：适配移动端，初始缩放1:1 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- 页面标题：浏览器标签显示的名称 -->
-<title>李雨辰</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leeyuchen</title>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
+    
+    <!-- ====================== 头部资源引入区 ====================== -->
+    <!-- 1. 基础兼容 Polyfill -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.replaceAll"></script>
 
-<!-- 网站图标配置：适配各浏览器/设备的图标显示 -->
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
-<link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
-<link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/site.webmanifest">
-<!-- 移动端/Windows图标适配：iOS/安卓/Windows磁贴图标 -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-512x512.png">
-<link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.svg">
-<meta name="msapplication-TileImage" content="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
-<meta name="msapplication-TileColor" content="#4158D0">
+    <!-- 2. 字体引入 -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" />
 
-<style>
-  /* 全局样式重置：清除默认边距，统一盒模型 */
-  *{margin:0;padding:0;box-sizing:border-box}
-  /* 页面主体样式：渐变背景、居中布局、适配最小高度 */
-  body{
-    font-family:system-ui,sans-serif; /* 系统默认字体，适配多设备 */
-    background:linear-gradient(135deg,#4158D0,#8695F3); /* 渐变色背景 */
-    color:white; /* 文字白色 */
-    min-height:100vh; /* 最小高度占满屏幕 */
-    display:grid;place-items:center; /* 内容垂直水平居中 */
-    padding:20px; /* 左右内边距，避免内容贴边 */
-  }
-  /* 核心容器样式：半透明毛玻璃效果，圆角 */
-  .box{
-    width:100%;max-width:420px; /* 自适应宽度，最大420px */
-    background:rgba(255,255,255,0.15); /* 半透明白色背景 */
-    backdrop-filter:blur(10px); /* 毛玻璃模糊效果 */
-    border-radius:20px;padding:30px;text-align:center; /* 圆角、内边距、文字居中 */
-  }
-  /* 输入框/按钮通用样式：宽度100%，圆角，统一内边距 */
-  input,button{
-    width:100%;padding:14px;border-radius:12px;border:none;outline:none;font-size:16px;margin:8px 0;
-  }
-  /* 输入框样式：半透明背景，白色文字，占位符浅白色 */
-  input{background:rgba(255,255,255,0.2);color:white;}
-  input::placeholder{color:rgba(255,255,255,0.7);}
-  /* 按钮样式：白色背景，主题色文字，加粗 */
-  button{background:white;color:#4158D0;font-weight:600;cursor:pointer;}
-  /* 退出按钮样式：半透明背景，白色文字 */
-  #logoutBtn{background:rgba(255,255,255,0.2);color:white;margin-top:20px;}
-  /* 错误提示样式：红色小字，固定高度避免布局跳动 */
-  #error{color:#ff4444;font-size:14px;margin-bottom:8px;height:16px;}
-  /* 登录/内容区域默认显示状态：登录区显示，内容区隐藏 */
-  #login{display:block}
-  #content{display:none}
-  /* 头像样式：圆形、居中、白色背景、主题色文字 */
-  .avatar{
-    width:90px;height:90px;background:white;border-radius:50%;margin:0 auto 16px;
-    display:grid;place-items:center;color:#4158D0;font-size:24px;font-weight:bold;
-  }
-  /* 姓名/简介样式：字号、间距调整 */
-  .name{font-size:24px;margin-bottom:8px}
-  .bio{opacity:.9;margin-bottom:24px}
-  /* 链接按钮样式：半透明背景，圆角，hover高亮 */
-  .link{
-    display:block;background:rgba(255,255,255,0.2);color:white;text-decoration:none;
-    padding:14px;border-radius:12px;margin:10px 0;
-  }
-  .link:hover{background:rgba(255,255,255,0.3);} /* 鼠标悬浮背景加深 */
-  /* 自动登录复选框样式：左对齐，适配行内布局 */
-  .auto-login{
-    display:flex;align-items:center;justify-content:flex-start;
-    margin:8px 0 16px;font-size:14px;
-  }
-  .auto-login input{width:auto;margin:0 8px 0 0;} /* 复选框宽度自适应，取消100% */
-</style>
+    <!-- 3. 计数器（不蒜子） -->
+    <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
+
+    <!-- 4. 图标字体（Font6） -->
+    <link type='text/css' rel="stylesheet" href="https://npm.elemecdn.com/font6pro@6.0.1/css/fontawesome.min.css" media='all'>
+    <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
+
+    <!-- 5. 音乐播放器（APlayer + MetingJS） -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script src="https://npm.elemecdn.com/meting2@0.0.1/js/Meting.min.js"></script>
+    
+    <!-- ====================== 全局样式定义区 ====================== -->
+    <style>
+        /* 基础页面样式 */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: LXGW WenKai, 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            min-height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 主容器 */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 100px; /* 为底部工具箱留出空间 */
+        }
+        
+        /* 头部导航 */
+        .header-nav {
+            background: rgba(100, 116, 219, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            color: #ffffff;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .nav-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        #headerAvatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6474db, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 12px rgba(100, 116, 219, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #headerAvatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(100, 116, 219, 0.4);
+        }
+        
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 透明样式（适配各类容器） */
+        .transparent-box {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(10px) !important;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .hope-ui-dark .transparent-box {
+            background-color: rgb(0 0 0 / 50%) !important;
+        }
+
+        /* 音乐播放器样式 */
+        .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+            left: -66px !important;
+        }
+        
+        .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+            left: 0 !important;
+        }
+
+        /* 内容区块 */
+        .content-section {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .hope-ui-dark .content-section {
+            background: rgba(0, 0, 0, 0.5);
+            color: #ddd;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #6474db;
+        }
+        
+        .hope-ui-dark .section-title {
+            color: #a5b4fc;
+        }
+
+        /* 个人资料区块 */
+        .profile-section {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .hope-ui-dark .profile-section {
+            background: rgba(0, 0, 0, 0.5);
+            color: #ddd;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6474db, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 8px 24px rgba(100, 116, 219, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #6474db;
+        }
+        
+        .hope-ui-dark .profile-name {
+            color: #a5b4fc;
+        }
+        
+        .profile-bio {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .hope-ui-dark .profile-stats {
+            color: #aaa;
+        }
+
+        /* 配置区域 */
+        .config-section {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .hope-ui-dark .config-section {
+            background: rgba(0, 0, 0, 0.5);
+            color: #ddd;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .config-item {
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* 主列表白天模式透明 */
+        .hope-ui-light .config-item {
+            background-color: rgba(255,255,255,0) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        /* 主列表夜间模式透明 */
+        .hope-ui-dark .config-item {
+            background-color: rgb(0 0 0 / 50%) !important;
+            backdrop-filter: blur(10px) !important;
+            color: #ddd;
+        }
+        
+        /* 确保配置项目使用与用户指定类名相同的样式 */
+        .config-item {
+            background-color: rgba(255,255,255,0) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .hope-ui-dark .config-item {
+            background-color: rgb(0 0 0 / 50%) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .config-item-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #6474db;
+        }
+        
+        .hope-ui-dark .config-item-title {
+            color: #a5b4fc;
+        }
+
+        /* 底部工具箱 - 透明背景 */
+        .footer-toolbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 15px;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            z-index: 1000;
+        }
+        
+        .footer-toolbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .footer-toolbar a:hover {
+            text-decoration: underline;
+            color: #e0e7ff;
+            transform: translateY(-2px);
+        }
+
+        /* 工具网格 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .tool-item {
+            padding: 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        /* 主列表白天模式透明 */
+        .hope-ui-light .tool-item {
+            background-color: rgba(255,255,255,0) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        /* 主列表夜间模式透明 */
+        .hope-ui-dark .tool-item {
+            background-color: rgb(0 0 0 / 50%) !important;
+            backdrop-filter: blur(10px) !important;
+            color: #ddd;
+        }
+        
+        /* 确保工具项目使用与用户指定类名相同的样式 */
+        .tool-item {
+            background-color: rgba(255,255,255,0) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .hope-ui-dark .tool-item {
+            background-color: rgb(0 0 0 / 50%) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .tool-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .hope-ui-light .tool-item:hover {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .hope-ui-dark .tool-item:hover {
+            background: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .tool-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .tool-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* 背景图（白天/夜间） */
+        .hope-ui-light {
+            background-image: url("https://wp.upx8.com/api.php") !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position-x: 100%;
+        }
+        .hope-ui-dark {
+            background-image: url("https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202411/d178711d0bd700bcc53af1dcf34be76c--2572619773.jpg") !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position-x: center;
+        }
+
+        /* 运行时间、访客信息样式 */
+        .stats-info {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 13px;
+            color: #666;
+        }
+        .hope-ui-dark .stats-info {
+            color: #aaa;
+        }
+
+        /* 一言样式 */
+        #hitokoto {
+            font-style: italic;
+            color: #136dfc;
+        }
+
+        /* 新的展开菜单按钮 */
+        .menu-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        /* 反转背景色逻辑 - 与工具箱风格相反 */
+        .hope-ui-light .menu-button {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .hope-ui-dark .menu-button {
+            background: rgba(255, 255, 255, 0.35);
+            color: #333;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(100, 116, 219, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .hope-ui-light .menu-button:hover {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+        }
+
+        .hope-ui-dark .menu-button:hover {
+            background: rgba(255, 255, 255, 0.45);
+            color: #333;
+        }
+
+        /* 展开菜单 */
+        .menu-dropdown {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 32px;
+            height: 128px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* 设置菜单白天模式透明 */
+        .hope-ui-light .menu-dropdown {
+            background-color: rgba(255,255,255,0) !important;
+        }
+
+        /* 设置菜单夜间模式透明 */
+        .hope-ui-dark .menu-dropdown {
+            background-color: rgb(0 0 0 / 50%) !important;
+        }
+
+        /* 兼容用户提供的类名 */
+        .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css {
+            background-color: rgba(255,255,255,0) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
+            background-color: rgb(0 0 0 / 50%) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .menu-dropdown.show {
+            display: flex;
+        }
+
+        .menu-item {
+            width: 100%;
+            height: 32px;
+            border-radius: 0;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        /* 反转背景色逻辑 - 与工具箱风格相反 */
+        .hope-ui-light .menu-item {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .hope-ui-dark .menu-item {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .menu-item:hover {
+            transform: none;
+        }
+
+        .hope-ui-light .menu-item:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: rgba(0, 0, 0, 1);
+        }
+
+        .hope-ui-dark .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        /* 菜单项图标样式 */
+        .menu-item i {
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .hope-ui-light .menu-item i {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .hope-ui-dark .menu-item i {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hope-ui-light .menu-item:hover i {
+            color: rgba(0, 0, 0, 1);
+        }
+
+        .hope-ui-dark .menu-item:hover i {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        /* 菜单项提示气泡 */
+        .menu-item::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .hope-ui-light .menu-item::before {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        .hope-ui-dark .menu-item::before {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        .menu-item:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 工具块鼠标悬停效果 */
+        .tool-item {
+            cursor: pointer;
+        }
+
+        /* 设置弹窗样式 */
+        .setting-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1003;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* 背景设置弹窗配色 */
+        .bg-modal {
+            background: rgba(100, 116, 219, 0.8);
+            color: white;
+        }
+
+        .hope-ui-dark .bg-modal {
+            background: rgba(80, 90, 180, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 头像设置弹窗配色 */
+        .avatar-modal {
+            background: rgba(168, 85, 247, 0.8);
+            color: white;
+        }
+
+        .hope-ui-dark .avatar-modal {
+            background: rgba(147, 51, 234, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 音乐配置弹窗配色 */
+        .music-modal {
+            background: rgba(236, 72, 153, 0.8);
+            color: white;
+        }
+
+        .hope-ui-dark .music-modal {
+            background: rgba(219, 39, 119, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-content:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #6474db;
+        }
+
+        .hope-ui-dark .modal-title {
+            color: #a5b4fc;
+        }
+
+        .modal-input {
+            margin-bottom: 20px;
+        }
+
+        .modal-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .modal-input input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .modal-input input:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .modal-input input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .history-section {
+            margin-bottom: 20px;
+        }
+
+        .history-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .history-list {
+            max-height: 100px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .hope-ui-dark .history-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 219, 0.5);
+            border-radius: 3px;
+        }
+
+        .hope-ui-dark .history-list::-webkit-scrollbar-thumb {
+            background: rgba(165, 180, 252, 0.5);
+        }
+
+        .history-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 219, 0.8);
+        }
+
+        .hope-ui-dark .history-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(165, 180, 252, 0.8);
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 底部信息样式 */
+        .footer-info {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 15px;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            z-index: 1000;
+        }
+        
+        .footer-info a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .footer-info a:hover {
+            text-decoration: underline;
+            color: #e0e7ff;
+            transform: translateY(-2px);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 10px;
+                padding-bottom: 120px;
+            }
+            
+            .header-nav {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-info {
+                padding: 10px;
+            }
+            
+            .footer-info a {
+                margin: 0 5px;
+                font-size: 12px;
+            }
+        }
+    </style>
+
+    <!-- ====================== 头部交互脚本区 ====================== -->
+    <!-- 模式切换优先加载 -->
+    <script>
+        // 优先初始化昼夜模式
+        (function() {
+            const bodyEl = document.body;
+            
+            // 初始化昼夜模式
+            function initDarkMode() {
+                const isDark = localStorage.getItem('darkMode') === 'true';
+                updateMode(isDark);
+            }
+
+            // 更新模式
+            function updateMode(isDark) {
+                if (isDark) {
+                    bodyEl.classList.remove('hope-ui-light');
+                    bodyEl.classList.add('hope-ui-dark');
+                    document.documentElement.classList.add('dark-mode');
+                    // 设置夜间模式图标
+                    const modeIcon = document.getElementById('modeIcon');
+                    if (modeIcon) {
+                        modeIcon.className = 'fas fa-moon';
+                    }
+                } else {
+                    bodyEl.classList.remove('hope-ui-dark');
+                    bodyEl.classList.add('hope-ui-light');
+                    document.documentElement.classList.remove('dark-mode');
+                    // 设置白天模式图标
+                    const modeIcon = document.getElementById('modeIcon');
+                    if (modeIcon) {
+                        modeIcon.className = 'fas fa-sun';
+                    }
+                }
+            }
+            
+            // 立即执行模式初始化
+            initDarkMode();
+        }());
+    </script>
+    
+    <!-- 鼠标点击爱心文字特效 -->
+    <script>
+        (function () {
+            var a_idx = 0;
+            window.onclick = function (event) {
+                var a = new Array("❤富强❤", "❤民主❤", "❤文明❤", "❤和谐❤", "❤自由❤", "❤平等❤", "❤公正❤", "法治❤", "❤爱国❤",
+                    "❤敬业❤", "❤诚信❤", "❤友善❤");
+                var heart = document.createElement("b");
+                heart.onselectstart = new Function('event.returnValue=false');
+                document.body.appendChild(heart).innerHTML = a[a_idx];
+                a_idx = (a_idx + 1) % a.length;
+                heart.style.cssText = "position: fixed;left:-100%;";
+
+                var f = 13,
+                    x = event.clientX - f / 2 - 30,
+                    y = event.clientY - f,
+                    c = randomColor(),
+                    a = 1,
+                    s = 0.8;
+
+                var timer = setInterval(function () {
+                    if (a <= 0) {
+                        document.body.removeChild(heart);
+                        clearInterval(timer);
+                    } else {
+                        heart.style.cssText = "font-size:16px;cursor: default;position: fixed;color:" +
+                            c + ";left:" + x + "px;top:" + y + "px;opacity:" + a + ";transform:scale(" +
+                            s + ");";
+                        y--;
+                        a -= 0.016;
+                        s += 0.002;
+                    }
+                }, 15)
+            }
+            function randomColor() {
+                return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+            }
+        }());
+    </script>
 </head>
 
-<body>
-<!-- 核心容器：包含登录区和内容区 -->
-<div class="box">
-  <!-- 登录区域：默认显示 -->
-  <div id="login">
-    <h2>请输入密码</h2>
-    <!-- 密码输入框：id=pwd用于JS获取值 -->
-    <input type="password" id="pwd" placeholder="输入访问密码">
-    <!-- 自动登录复选框：控制是否记住密码/自动登录 -->
-    <div class="auto-login">
-      <input type="checkbox" id="autoLogin">
-      <label for="autoLogin">记住密码并自动登录</label>
+<body class="hope-ui-light">
+    <!-- 模式切换和设置按钮 -->
+    <!-- ====================== 页面主体区 ====================== -->
+    <div class="main-container">
+        <!-- 头部导航 -->
+        <div class="header-nav">
+            <div class="nav-title-container">
+                <div class="profile-avatar" id="headerAvatar" onclick="openAvatarModal()">LYC</div>
+                <div class="nav-title" onclick="window.location.href='https://github.com/leeyuchen4073/leeyuchen.github.io'" style="cursor: pointer;">leeyuchen</div>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="index.html">首页</a>
+                <a class="nav-link" href="#profile">个人资料</a>
+                <a class="nav-link" href="#config">内容配置</a>
+                <a class="nav-link" href="#tools">工具箱</a>
+                <a class="nav-link" href="login.html">登录</a>
+                <a class="nav-link" href="https://github.com/leeyuchen4073/leeyuchen.github.io" target="_blank">GitHub</a>
+            </div>
+        </div>
+
+        <!-- 个人资料区域 -->
+        <div id="profile" class="profile-section">
+            <div class="profile-avatar">LYC</div>
+            <div class="profile-info">
+                <div class="profile-name">leeyuchen</div>
+                <div class="profile-bio">
+                    你好，我是李雨辰，一名热爱技术的开发者。专注于前端开发、UI设计和用户体验优化。
+                    欢迎访问我的个人网站，希望你在这里度过愉快的时光！
+                </div>
+                <div class="profile-stats">
+                    <span>📍 冰岛</span>
+                    <span>💻 网络爱好者</span>
+                    <span>📧 <a href="mailto:254036252@qq.com" style="color: inherit; text-decoration: none; hover: underline;">254036252@qq.com</a></span>
+                    <span>🔗 <a href="https://leeyuchen.top" target="_blank" style="color: inherit; text-decoration: none; hover: underline;">leeyuchen.top</a></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容配置区域 -->
+        <div id="config" class="config-section">
+            <h2 class="section-title">网站内容配置</h2>
+            <div class="config-grid">
+                <div class="config-item">
+                    <div class="config-item-title">个人简介</div>
+                    <p>编辑个人资料和简介信息</p>
+                    <button onclick="editProfile()" style="margin-top:10px;padding:6px 12px;border-radius:6px;border:none;background:#6474db;color:white;cursor:pointer;">编辑</button>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-title">头像设置</div>
+                    <p>设置个人头像图片链接</p>
+                    <button onclick="openAvatarModal()" style="margin-top:10px;padding:6px 12px;border-radius:6px;border:none;background:#6474db;color:white;cursor:pointer;">设置</button>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-title">背景设置</div>
+                    <p>自定义网站背景图片和主题</p>
+                    <button onclick="openSettingModal()" style="margin-top:10px;padding:6px 12px;border-radius:6px;border:none;background:#6474db;color:white;cursor:pointer;">设置</button>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-title">音乐配置</div>
+                    <p>修改音乐播放器歌单</p>
+                    <button onclick="openMusicModal()" style="margin-top:10px;padding:6px 12px;border-radius:6px;border:none;background:#6474db;color:white;cursor:pointer;">配置</button>
+                </div>
+                <div class="config-item">
+                    <div class="config-item-title">工具管理</div>
+                    <p>添加或移除工具箱工具</p>
+                    <button onclick="manageTools()" style="margin-top:10px;padding:6px 12px;border-radius:6px;border:none;background:#6474db;color:white;cursor:pointer;">管理</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 便捷工具 -->
+        <div class="content-section" id="tools">
+            <h3 class="section-title">便捷工具</h3>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-code" style="color:#409EFF;"></i></div>
+                    <div class="tool-name">代码工具</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-image" style="color:#00AC6A;"></i></div>
+                    <div class="tool-name">图片工具</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-file-pdf" style="color:#FF4D4F;"></i></div>
+                    <div class="tool-name">PDF工具</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-calculator" style="color:#FAAD14;"></i></div>
+                    <div class="tool-name">计算器</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-clock" style="color:#722ED1;"></i></div>
+                    <div class="tool-name">时间工具</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-icon"><i class="fas fa-globe" style="color:#1890FF;"></i></div>
+                    <div class="tool-name">网络工具</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 站点信息 -->
+        <div class="content-section">
+            <!-- 访客信息 -->
+            <div class="stats-info" id="welcome">正在获取您的访问信息...</div>
+            <!-- 站点统计 -->
+            <div class="stats-info">本站已稳定运行<span id="runtime"></span></div>
+            <div class="stats-info">
+                本页面访问量 <span id="busuanzi_value_page_pv" style="color: #6474db;"></span> 次 | 
+                本站总访问量 <span id="busuanzi_value_site_pv" style="color: #6474db;"></span> 次 | 
+                本站总访客数 <span id="busuanzi_value_site_uv" style="color: #6474db;"></span> 人
+            </div>
+            <!-- 今日诗词 -->
+            <div class="stats-info" style="margin-top: 15px; font-style: italic;">
+                <span id="jinrishici-sentence">喜欢就像一阵风，而爱是细水长流。</span>
+            </div>
+            <!-- 一言 -->
+            <div class="stats-info" style="margin-top: 10px;">
+                "
+                <span id="hitokoto">
+                    <a href="#" id="hitokoto_text">人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.</a>
+                </span> "
+            </div>
+        </div>
     </div>
-    <!-- 登录按钮：点击触发login()函数 -->
-    <button onclick="login()">进入主页</button>
-    <!-- 错误提示区域：显示密码错误信息 -->
-    <div id="error"></div>
-  </div>
 
-  <!-- 内容区域：登录后显示 -->
-  <div id="content">
-    <div class="avatar">LYC</div> <!-- 头像展示 -->
-    <h1 class="name">李雨辰</h1> <!-- 姓名 -->
-    <p class="bio">leeyuchen.top</p> <!-- 简介/域名 -->
-    <!-- 功能链接：主页、GitHub、文件列表、联系我 -->
-    <a class="link" href="https://leeyuchen.top">我的主页</a>
-    <a class="link" href="https://github.com/leeyuchen4073" target="_blank">GitHub</a>
-    <a class="link" onclick="alert('文件列表')">文件列表</a>
-    <a class="link" href="mailto:254036252@qq.com">联系我</a>
-    <!-- 退出按钮：点击触发logout()函数 -->
-    <button id="logoutBtn" onclick="logout()">退出登录</button>
-  </div>
-</div>
+    <!-- 底部信息 -->
+    <div class="footer-info">
+        <div style="text-align: center; padding: 10px;">
+            <a href="http://www.yujn.cn/" target="_blank"><i class="fab fa-qq" style="color:#4488D1"></i> 工具</a> |
+            <a href="https://api.uomg.com/api/rand.music?sort=%E7%83%AD%E6%AD%8C%E6%A6%9C&format=mp3" target="_blank"><i class="fa-duotone fa-envelope-open" style="color:#409EFF"></i> 邮箱</a> |
+            <a href="https://video.taotutu.cn/" target="_blank"><i class="fas fa-edit" style="color:#409EFF"></i> 影视</a> |
+            <a href="login.html" target="_blank"><i class="fa fa-cloud-download" style="color:#00AC6A;"></i> 登录</a> |
+            <a href="index.html" target="_blank"><i class="fa-solid fa-folder-gear" style="color:#a061d4;"></i> 管理</a> |
+            <a href="https://alist.nn.ci/zh/" target="_blank"><i class="fa-solid fa-copyright" style="color:#409EFF;"></i> Alist</a>
+        </div>
+        <div style="text-align: center; padding: 10px;">
+            <a href="https://icp.gov.moe/" target="_blank"><i class="fa-solid fa-shield-check" style="color:#409EFF;"></i> ICP备2025000000号-萌</a>
+        </div>
+    </div>
 
-<!-- 引入加密库：备用（当前未实际使用加密逻辑） -->
-<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
-<script>
-// 核心配置项：登录密码、加密内容（备用）
-const SECRET_KEY      = "123456";     // 登录验证的密码
-const ENCRYPTED_HTML  = "U2FsdGVkX1+o9QmHwFEsy5GQkH4m+N1rH0dFXpkJzJ4="; // 备用加密内容
+    <!-- 新的展开菜单按钮和菜单 -->
+    <div class="menu-button" onclick="toggleMenu()">
+        <i class="fas fa-ellipsis-v"></i>
+    </div>
 
-// DOM元素获取：缓存常用元素，避免重复查询
-let error = document.getElementById('error'); // 错误提示元素
-let pwdInput = document.getElementById('pwd'); // 密码输入框
-let autoLoginCheckbox = document.getElementById('autoLogin'); // 自动登录复选框
+    <div class="menu-dropdown" id="menuDropdown">
+        <div class="menu-item" onclick="location.reload()" data-tooltip="刷新">
+            <i class="fas fa-sync-alt"></i>
+        </div>
+        <div class="menu-item" onclick="toggleMode()" data-tooltip="切换模式">
+            <i class="fas fa-sun" id="modeIcon"></i>
+        </div>
+        <div class="menu-item" onclick="openSettingModal()" data-tooltip="设置">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="menu-item" onclick="toggleMenu()" data-tooltip="菜单">
+            <i class="fas fa-ellipsis-v"></i>
+        </div>
+    </div>
 
-// 页面加载完成执行：初始化逻辑
-window.onload = () => {
-  // 自动聚焦到密码输入框：提升用户体验，打开页面即可输入
-  pwdInput.focus();
-  
-  // 读取本地缓存的密码和自动登录状态
-  const savedPwd = localStorage.getItem('savedPwd'); // 保存的密码
-  const isAutoLogin = localStorage.getItem('autoLogin') === 'true'; // 是否自动登录
-  
-  // 填充保存的密码到输入框，同步复选框状态
-  if(savedPwd) {
-    pwdInput.value = savedPwd;
-    autoLoginCheckbox.checked = isAutoLogin;
-  }
+    <!-- 设置弹窗 -->
+    <div class="setting-modal" id="settingModal">
+        <div class="modal-content bg-modal">
+            <div class="modal-title">背景图片设置</div>
+            <div class="modal-input">
+                <label>白天模式背景图链接</label>
+                <input type="text" id="lightBgUrl" placeholder="输入图片URL" value="https://wp.upx8.com/api.php">
+            </div>
+            <div class="history-section">
+                <div class="history-title">白天模式历史记录</div>
+                <div class="history-list" id="lightHistoryList"></div>
+            </div>
+            <div class="modal-input">
+                <label>夜间模式背景图链接</label>
+                <input type="text" id="darkBgUrl" placeholder="输入图片URL" value="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">
+            </div>
+            <div class="history-section">
+                <div class="history-title">夜间模式历史记录</div>
+                <div class="history-list" id="darkHistoryList"></div>
+            </div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-save" onclick="saveBgSettings()">保存设置</button>
+                <button class="modal-btn btn-close" onclick="closeSettingModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 头像设置弹窗 -->
+    <div class="setting-modal" id="avatarModal">
+        <div class="modal-content avatar-modal">
+            <div class="modal-title">头像设置</div>
+            <div class="modal-input">
+                <label>头像图片链接</label>
+                <input type="text" id="avatarUrl" placeholder="输入图片URL">
+            </div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-save" onclick="saveAvatarSettings()">保存设置</button>
+                <button class="modal-btn btn-close" onclick="closeAvatarModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 音乐配置弹窗 -->
+    <div class="setting-modal" id="musicModal">
+        <div class="modal-content music-modal">
+            <div class="modal-title">音乐配置</div>
+            <div class="modal-input">
+                <label>网易云歌单ID</label>
+                <input type="text" id="playlistId" placeholder="输入歌单ID" value="825858380">
+            </div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-save" onclick="saveMusicSettings()">保存设置</button>
+                <button class="modal-btn btn-close" onclick="closeMusicModal()">关闭</button>
+            </div>
+        </div>
+    </div>
 
-  // 自动登录逻辑：勾选自动登录且密码正确，直接进入内容区
-  if(isAutoLogin && savedPwd === SECRET_KEY) {
-    document.getElementById('login').style.display='none';
-    document.getElementById('content').style.display='block';
-    localStorage.setItem('logged','true');
-  } else if(localStorage.getItem('logged') === 'true') {
-    // 兼容原有登录状态：已登录但未勾选自动登录，也显示内容区
-    document.getElementById('login').style.display='none';
-    document.getElementById('content').style.display='block';
-  }
+    <!-- ====================== 尾部脚本区 ====================== -->
+    <!-- 音乐播放器 -->
+    <div style="position: fixed; bottom: 100px; left: 0; z-index: 1002;">
+        <div id="musicPlayer"></div>
+    </div>
 
-  // 回车触发登录：输入密码后按回车即可登录，提升体验
-  pwdInput.addEventListener('keyup', e=>{ if(e.key==='Enter') login() });
-}
+    <!-- 今日诗词API -->
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
 
-// 登录函数：验证密码，处理登录逻辑
-function login(){
-  let val = pwdInput.value.trim(); // 获取并去除密码前后空格
-  if(val === SECRET_KEY){ // 密码验证通过
-    error.textContent = ''; // 清空错误提示
-    // 根据复选框状态保存/清除密码和自动登录状态
-    if(autoLoginCheckbox.checked) {
-      localStorage.setItem('savedPwd', val); // 保存密码
-      localStorage.setItem('autoLogin', 'true'); // 标记自动登录
-    } else {
-      localStorage.removeItem('savedPwd'); // 清除保存的密码
-      localStorage.removeItem('autoLogin'); // 清除自动登录标记
-    }
-    // 更新登录状态，切换到内容区
-    localStorage.setItem('logged','true');
-    document.getElementById('login').style.display='none';
-    document.getElementById('content').style.display='block';
-  }else{ // 密码错误
-    error.textContent = '密码错误，请重新输入'; // 显示错误提示
-  }
-}
+    <!-- 一言API -->
+    <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
 
-// 退出登录函数：清除缓存，恢复到登录界面
-function logout(){
-  // 清除所有登录相关缓存
-  localStorage.removeItem('logged');
-  localStorage.removeItem('savedPwd');
-  localStorage.removeItem('autoLogin');
-  // 重置界面状态
-  document.getElementById('content').style.display='none';
-  document.getElementById('login').style.display='block';
-  error.textContent = ''; // 清空错误提示
-  pwdInput.value = ''; // 清空密码输入框
-  autoLoginCheckbox.checked = false; // 取消复选框勾选
-  pwdInput.focus(); // 退出后重新聚焦到密码框
-}
-</script>
+    <!-- 访客IP显示 -->
+    <script>
+        fetch('https://api.vore.top/api/IPdata')
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ipinfo.text;
+                const province = data.ipdata.info1;
+                const city = data.ipdata.info2;
+                const isp = data.ipdata.isp;
+                const area_code = data.ipinfo.cnip;
+                const nation = data.ipdata.info1;
+                let welcomeMessage;
+                if (area_code) {
+                    welcomeMessage = `欢迎 ${province}${city}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                } else {
+                    welcomeMessage = `欢迎 ${nation}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                }
+                document.getElementById('welcome').textContent = welcomeMessage;
+            })
+            .catch(error => {
+                console.error("获取IP信息失败：", error);
+                document.getElementById('welcome').textContent = "欢迎访问本站（IP信息获取失败）";
+            });
+    </script>
+
+    <!-- 站点运行时间 -->
+    <script>
+        function updateRuntime() {
+            const startDate = new Date('2024-11-30T00:00:00');
+            const now = new Date();
+            const elapsed = now - startDate;
+
+            const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+            document.getElementById('runtime').innerHTML = `${days}天 ${hours}小时 ${minutes}分 ${seconds}秒`;
+        }
+        setInterval(updateRuntime, 1000);
+        updateRuntime();
+    </script>
+
+    <!-- 配置功能 -->
+    <script>
+        function editProfile() {
+            alert('编辑个人资料功能开发中...');
+        }
+        
+        function configMusic() {
+            alert('音乐配置功能开发中...');
+        }
+        
+        function manageTools() {
+            alert('工具管理功能开发中...');
+        }
+    </script>
+
+    <!-- 核心配置和功能 -->
+    <script>
+        // 核心配置
+        const SECRET_KEY = "123456"; // 密码验证
+        const MAX_HISTORY = 10;
+        // DOM 元素
+        const bodyEl = document.body;
+        const settingModal = document.getElementById('settingModal');
+        const lightBgUrlInput = document.getElementById('lightBgUrl');
+        const darkBgUrlInput = document.getElementById('darkBgUrl');
+        const lightHistoryList = document.getElementById('lightHistoryList');
+        const darkHistoryList = document.getElementById('darkHistoryList');
+
+        // 初始化
+        window.onload = function() {
+            // 验证登录状态
+            const isLogin = localStorage.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                console.log('用户未登录');
+            }
+            
+            // 加载头像设置
+            loadAvatar();
+            
+            // 加载音乐播放器
+            loadMusicPlayer();
+        };
+
+        // 昼夜模式切换
+        function toggleMode() {
+            const isDark = document.documentElement.classList.toggle('dark-mode');
+            const bodyEl = document.body;
+            if (isDark) {
+                bodyEl.classList.remove('hope-ui-light');
+                bodyEl.classList.add('hope-ui-dark');
+                document.documentElement.classList.add('dark-mode');
+                // 设置夜间模式图标
+                const modeIcon = document.getElementById('modeIcon');
+                if (modeIcon) {
+                    modeIcon.className = 'fas fa-moon';
+                }
+            } else {
+                bodyEl.classList.remove('hope-ui-dark');
+                bodyEl.classList.add('hope-ui-light');
+                document.documentElement.classList.remove('dark-mode');
+                // 设置白天模式图标
+                const modeIcon = document.getElementById('modeIcon');
+                if (modeIcon) {
+                    modeIcon.className = 'fas fa-sun';
+                }
+            }
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        // 设置弹窗相关
+        function openSettingModal() {
+            settingModal.style.display = 'flex';
+        }
+        function closeSettingModal() {
+            settingModal.style.display = 'none';
+        }
+        function saveBgSettings() {
+            alert('背景设置已保存！');
+            closeSettingModal();
+        }
+        
+        // 退出登录逻辑
+        function logout() {
+            localStorage.removeItem('isLogin');
+            window.location.href = 'login.html';
+        }
+
+        // 展开菜单功能
+        function toggleMenu() {
+            const menuDropdown = document.getElementById('menuDropdown');
+            const menuButton = document.querySelector('.menu-button');
+            menuDropdown.classList.toggle('show');
+            if (menuDropdown.classList.contains('show')) {
+                menuButton.style.display = 'none';
+            } else {
+                menuButton.style.display = 'flex';
+            }
+        }
+        
+        // 头像设置相关函数
+        function openAvatarModal() {
+            const avatarModal = document.getElementById('avatarModal');
+            const avatarUrlInput = document.getElementById('avatarUrl');
+            // 加载当前头像链接
+            const currentAvatar = localStorage.getItem('avatarUrl');
+            if (currentAvatar) {
+                avatarUrlInput.value = currentAvatar;
+            }
+            avatarModal.style.display = 'flex';
+        }
+        
+        function closeAvatarModal() {
+            const avatarModal = document.getElementById('avatarModal');
+            avatarModal.style.display = 'none';
+        }
+        
+        function saveAvatarSettings() {
+            const avatarUrl = document.getElementById('avatarUrl').value;
+            localStorage.setItem('avatarUrl', avatarUrl);
+            loadAvatar();
+            closeAvatarModal();
+            alert('头像设置已保存！');
+        }
+        
+        function loadAvatar() {
+            const avatarUrl = localStorage.getItem('avatarUrl');
+            const headerAvatar = document.getElementById('headerAvatar');
+            const profileAvatars = document.querySelectorAll('.profile-avatar');
+            
+            if (avatarUrl) {
+                // 设置头部头像
+                headerAvatar.style.backgroundImage = `url('${avatarUrl}')`;
+                headerAvatar.style.backgroundSize = 'cover';
+                headerAvatar.style.backgroundPosition = 'center';
+                headerAvatar.textContent = '';
+                
+                // 设置所有个人资料区域的头像
+                profileAvatars.forEach(avatar => {
+                    avatar.style.backgroundImage = `url('${avatarUrl}')`;
+                    avatar.style.backgroundSize = 'cover';
+                    avatar.style.backgroundPosition = 'center';
+                    avatar.textContent = '';
+                });
+            }
+        }
+        
+        // 音乐配置相关函数
+        function openMusicModal() {
+            const musicModal = document.getElementById('musicModal');
+            const playlistIdInput = document.getElementById('playlistId');
+            // 加载当前歌单ID
+            const currentPlaylistId = localStorage.getItem('playlistId') || '825858380';
+            playlistIdInput.value = currentPlaylistId;
+            musicModal.style.display = 'flex';
+        }
+        
+        function closeMusicModal() {
+            const musicModal = document.getElementById('musicModal');
+            musicModal.style.display = 'none';
+        }
+        
+        function saveMusicSettings() {
+            const playlistId = document.getElementById('playlistId').value;
+            localStorage.setItem('playlistId', playlistId);
+            loadMusicPlayer();
+            closeMusicModal();
+            alert('音乐设置已保存！');
+        }
+        
+        function loadMusicPlayer() {
+            const playlistId = localStorage.getItem('playlistId') || '825858380';
+            const musicPlayer = document.getElementById('musicPlayer');
+            // 重新生成音乐播放器
+            musicPlayer.innerHTML = `<meting-js fixed="true" autoplay="false" theme="#6474db" list-folded="true" server="netease" type="playlist" id="${playlistId}"></meting-js>`;
+        }
+    </script>
 </body>
 </html>
