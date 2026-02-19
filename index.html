@@ -714,7 +714,7 @@
         autoLogin.checked = isAutoLogin;
         
         // 加载背景设置
-        await loadBgSettings();
+        await loadBackgroundSettings();
         
         // 自动登录逻辑
         if (isAutoLogin && savedPwd) {
@@ -808,12 +808,10 @@
       settingModal.style.display = 'none';
     }
     async function saveBgSettings() {
+      const lightBgUrl = document.getElementById('lightBgUrl').value.trim();
+      const darkBgUrl = document.getElementById('darkBgUrl').value.trim();
+      
       try {
-        // 获取用户输入的背景图片链接
-        const lightBgUrl = document.getElementById('lightBgUrl').value.trim();
-        const darkBgUrl = document.getElementById('darkBgUrl').value.trim();
-        
-        // 保存到缓存
         const existingCache = await loadCache() || {};
         const cacheData = {
           ...existingCache,
@@ -822,13 +820,8 @@
         };
         await saveCache(cacheData);
         
-        // 立即应用新的背景图片
-        const isDark = document.documentElement.classList.contains('dark-mode');
-        if (isDark && darkBgUrl) {
-          document.querySelector('.hope-ui-dark').style.backgroundImage = `url("${darkBgUrl}") !important`;
-        } else if (lightBgUrl) {
-          document.querySelector('.hope-ui-light').style.backgroundImage = `url("${lightBgUrl}") !important`;
-        }
+        // 立即更新背景图片
+        updateBackgrounds(lightBgUrl, darkBgUrl);
         
         showTopNotice('背景设置已保存');
         closeSettingModal();
@@ -838,27 +831,38 @@
       }
     }
     
-    async function loadBgSettings() {
-      try {
-        const cache = await loadCache();
-        const lightBgUrl = cache?.lightBgUrl;
-        const darkBgUrl = cache?.darkBgUrl;
-        
-        // 设置输入框的值
-        if (lightBgUrl) {
-          document.getElementById('lightBgUrl').value = lightBgUrl;
-          document.querySelector('.hope-ui-light').style.backgroundImage = `url("${lightBgUrl}") !important`;
-        }
-        if (darkBgUrl) {
-          document.getElementById('darkBgUrl').value = darkBgUrl;
-          document.querySelector('.hope-ui-dark').style.backgroundImage = `url("${darkBgUrl}") !important`;
-        }
-      } catch (error) {
-        console.error('加载背景设置失败:', error);
+    function updateBackgrounds(lightUrl, darkUrl) {
+      const lightElement = document.querySelector('.hope-ui-light');
+      const darkElement = document.querySelector('.hope-ui-dark');
+      
+      if (lightElement) {
+        lightElement.style.backgroundImage = `url("${lightUrl}") !important`;
+      }
+      
+      if (darkElement) {
+        darkElement.style.backgroundImage = `url("${darkUrl}") !important`;
       }
     }
     
     function loadHistory() {}
+    
+    // 加载背景设置
+    async function loadBackgroundSettings() {
+      try {
+        const cache = await loadCache();
+        const lightBgUrl = cache?.lightBgUrl || 'https://wp.upx8.com/api.php';
+        const darkBgUrl = cache?.darkBgUrl || 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
+        
+        // 更新输入框值
+        document.getElementById('lightBgUrl').value = lightBgUrl;
+        document.getElementById('darkBgUrl').value = darkBgUrl;
+        
+        // 应用背景图片
+        updateBackgrounds(lightBgUrl, darkBgUrl);
+      } catch (error) {
+        console.error('加载背景设置失败:', error);
+      }
+    }
   </script>
 </body>
 </html>
