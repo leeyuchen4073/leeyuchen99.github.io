@@ -713,6 +713,9 @@
         // 设置自动登录复选框状态
         autoLogin.checked = isAutoLogin;
         
+        // 加载背景设置
+        await loadBgSettings();
+        
         // 自动登录逻辑
         if (isAutoLogin && savedPwd) {
           login();
@@ -804,10 +807,57 @@
     function closeSettingModal() {
       settingModal.style.display = 'none';
     }
-    function saveBgSettings() {
-      showTopNotice('背景设置已保存');
-      closeSettingModal();
+    async function saveBgSettings() {
+      try {
+        // 获取用户输入的背景图片链接
+        const lightBgUrl = document.getElementById('lightBgUrl').value.trim();
+        const darkBgUrl = document.getElementById('darkBgUrl').value.trim();
+        
+        // 保存到缓存
+        const existingCache = await loadCache() || {};
+        const cacheData = {
+          ...existingCache,
+          lightBgUrl: lightBgUrl,
+          darkBgUrl: darkBgUrl
+        };
+        await saveCache(cacheData);
+        
+        // 立即应用新的背景图片
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        if (isDark && darkBgUrl) {
+          document.querySelector('.hope-ui-dark').style.backgroundImage = `url("${darkBgUrl}") !important`;
+        } else if (lightBgUrl) {
+          document.querySelector('.hope-ui-light').style.backgroundImage = `url("${lightBgUrl}") !important`;
+        }
+        
+        showTopNotice('背景设置已保存');
+        closeSettingModal();
+      } catch (error) {
+        console.error('保存背景设置失败:', error);
+        showTopNotice('保存失败，请重试');
+      }
     }
+    
+    async function loadBgSettings() {
+      try {
+        const cache = await loadCache();
+        const lightBgUrl = cache?.lightBgUrl;
+        const darkBgUrl = cache?.darkBgUrl;
+        
+        // 设置输入框的值
+        if (lightBgUrl) {
+          document.getElementById('lightBgUrl').value = lightBgUrl;
+          document.querySelector('.hope-ui-light').style.backgroundImage = `url("${lightBgUrl}") !important`;
+        }
+        if (darkBgUrl) {
+          document.getElementById('darkBgUrl').value = darkBgUrl;
+          document.querySelector('.hope-ui-dark').style.backgroundImage = `url("${darkBgUrl}") !important`;
+        }
+      } catch (error) {
+        console.error('加载背景设置失败:', error);
+      }
+    }
+    
     function loadHistory() {}
   </script>
 </body>
