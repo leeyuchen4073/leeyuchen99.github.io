@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<!-- 字符编码声明：统一使用UTF-8避免中文乱码 -->
 <meta charset="UTF-8">
+<!-- 视口配置：适配移动端，初始缩放1:1 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 页面标题：浏览器标签显示的名称 -->
 <title>李雨辰</title>
-<!-- 网站图标配置 -->
+
+<!-- 网站图标配置：适配各浏览器/设备的图标显示 -->
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
 <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
 <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/site.webmanifest">
-<!-- 移动端/Windows图标适配 -->
+<!-- 移动端/Windows图标适配：iOS/安卓/Windows磁贴图标 -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/web-app-manifest-512x512.png">
@@ -17,189 +21,174 @@
 <meta name="msapplication-TileColor" content="#4158D0">
 
 <style>
+  /* 全局样式重置：清除默认边距，统一盒模型 */
   *{margin:0;padding:0;box-sizing:border-box}
+  /* 页面主体样式：渐变背景、居中布局、适配最小高度 */
   body{
-    font-family:system-ui,sans-serif;
-    background:linear-gradient(135deg,#4158D0,#8695F3);
-    color:white;
-    min-height:100vh;
-    display:grid;
-    place-items:center;
-    padding:20px;
+    font-family:system-ui,sans-serif; /* 系统默认字体，适配多设备 */
+    background:linear-gradient(135deg,#4158D0,#8695F3); /* 渐变色背景 */
+    color:white; /* 文字白色 */
+    min-height:100vh; /* 最小高度占满屏幕 */
+    display:grid;place-items:center; /* 内容垂直水平居中 */
+    padding:20px; /* 左右内边距，避免内容贴边 */
   }
+  /* 核心容器样式：半透明毛玻璃效果，圆角 */
   .box{
-    width:100%;
-    max-width:420px;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(10px);
-    border-radius:20px;
-    padding:30px;
-    text-align:center;
+    width:100%;max-width:420px; /* 自适应宽度，最大420px */
+    background:rgba(255,255,255,0.15); /* 半透明白色背景 */
+    backdrop-filter:blur(10px); /* 毛玻璃模糊效果 */
+    border-radius:20px;padding:30px;text-align:center; /* 圆角、内边距、文字居中 */
   }
+  /* 输入框/按钮通用样式：宽度100%，圆角，统一内边距 */
   input,button{
-    width:100%;
-    padding:14px;
-    border-radius:12px;
-    border:none;
-    outline:none;
-    font-size:16px;
-    margin:8px 0;
+    width:100%;padding:14px;border-radius:12px;border:none;outline:none;font-size:16px;margin:8px 0;
   }
-  input{
-    background:rgba(255,255,255,0.2);
-    color:white;
-  }
-  input::placeholder{color:rgba(255,255,255,0.7)}
-  button{
-    background:white;
-    color:#4158D0;
-    font-weight:600;
-    cursor:pointer;
-  }
-  #logoutBtn{
-    background:rgba(255,255,255,0.2);
-    color:white;
-    margin-top:20px;
-  }
-  #error{
-    color:#ff4444;
-    font-size:14px;
-    margin-bottom:8px;
-    height:16px;
-  }
+  /* 输入框样式：半透明背景，白色文字，占位符浅白色 */
+  input{background:rgba(255,255,255,0.2);color:white;}
+  input::placeholder{color:rgba(255,255,255,0.7);}
+  /* 按钮样式：白色背景，主题色文字，加粗 */
+  button{background:white;color:#4158D0;font-weight:600;cursor:pointer;}
+  /* 退出按钮样式：半透明背景，白色文字 */
+  #logoutBtn{background:rgba(255,255,255,0.2);color:white;margin-top:20px;}
+  /* 错误提示样式：红色小字，固定高度避免布局跳动 */
+  #error{color:#ff4444;font-size:14px;margin-bottom:8px;height:16px;}
+  /* 登录/内容区域默认显示状态：登录区显示，内容区隐藏 */
   #login{display:block}
   #content{display:none}
+  /* 头像样式：圆形、居中、白色背景、主题色文字 */
   .avatar{
-    width:90px;height:90px;
-    background:white;
-    border-radius:50%;
-    margin:0 auto 16px;
-    display:grid;place-items:center;
-    color:#4158D0;
-    font-size:24px;font-weight:bold;
+    width:90px;height:90px;background:white;border-radius:50%;margin:0 auto 16px;
+    display:grid;place-items:center;color:#4158D0;font-size:24px;font-weight:bold;
   }
+  /* 姓名/简介样式：字号、间距调整 */
   .name{font-size:24px;margin-bottom:8px}
   .bio{opacity:.9;margin-bottom:24px}
+  /* 链接按钮样式：半透明背景，圆角，hover高亮 */
   .link{
-    display:block;
-    background:rgba(255,255,255,0.2);
-    color:white;text-decoration:none;
+    display:block;background:rgba(255,255,255,0.2);color:white;text-decoration:none;
     padding:14px;border-radius:12px;margin:10px 0;
   }
-  .link:hover{background:rgba(255,255,255,0.3)}
-  /* 自动登录复选框样式 */
+  .link:hover{background:rgba(255,255,255,0.3);} /* 鼠标悬浮背景加深 */
+  /* 自动登录复选框样式：左对齐，适配行内布局 */
   .auto-login{
-    display:flex;
-    align-items:center;
-    justify-content:flex-start;
-    margin:8px 0 16px;
-    font-size:14px;
+    display:flex;align-items:center;justify-content:flex-start;
+    margin:8px 0 16px;font-size:14px;
   }
-  .auto-login input{
-    width:auto;
-    margin:0 8px 0 0;
-  }
+  .auto-login input{width:auto;margin:0 8px 0 0;} /* 复选框宽度自适应，取消100% */
 </style>
 </head>
 
 <body>
+<!-- 核心容器：包含登录区和内容区 -->
 <div class="box">
+  <!-- 登录区域：默认显示 -->
   <div id="login">
     <h2>请输入密码</h2>
+    <!-- 密码输入框：id=pwd用于JS获取值 -->
     <input type="password" id="pwd" placeholder="输入访问密码">
-    <!-- 新增自动登录复选框 -->
+    <!-- 自动登录复选框：控制是否记住密码/自动登录 -->
     <div class="auto-login">
       <input type="checkbox" id="autoLogin">
       <label for="autoLogin">记住密码并自动登录</label>
     </div>
+    <!-- 登录按钮：点击触发login()函数 -->
     <button onclick="login()">进入主页</button>
+    <!-- 错误提示区域：显示密码错误信息 -->
     <div id="error"></div>
   </div>
 
+  <!-- 内容区域：登录后显示 -->
   <div id="content">
-    <div class="avatar">LYC</div>
-    <h1 class="name">李雨辰</h1>
-    <p class="bio">leeyuchen.top</p>
+    <div class="avatar">LYC</div> <!-- 头像展示 -->
+    <h1 class="name">李雨辰</h1> <!-- 姓名 -->
+    <p class="bio">leeyuchen.top</p> <!-- 简介/域名 -->
+    <!-- 功能链接：主页、GitHub、文件列表、联系我 -->
     <a class="link" href="https://leeyuchen.top">我的主页</a>
     <a class="link" href="https://github.com/leeyuchen4073" target="_blank">GitHub</a>
     <a class="link" onclick="alert('文件列表')">文件列表</a>
     <a class="link" href="mailto:254036252@qq.com">联系我</a>
+    <!-- 退出按钮：点击触发logout()函数 -->
     <button id="logoutBtn" onclick="logout()">退出登录</button>
   </div>
 </div>
 
+<!-- 引入加密库：备用（当前未实际使用加密逻辑） -->
 <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
 <script>
-// 自定义配置
-const SECRET_KEY      = "123456";     // 你的真实密码
-const ENCRYPTED_HTML  = "U2FsdGVkX1+o9QmHwFEsy5GQkH4m+N1rH0dFXpkJzJ4=";
+// 核心配置项：登录密码、加密内容（备用）
+const SECRET_KEY      = "123456";     // 登录验证的密码
+const ENCRYPTED_HTML  = "U2FsdGVkX1+o9QmHwFEsy5GQkH4m+N1rH0dFXpkJzJ4="; // 备用加密内容
 
-// DOM元素
-let error = document.getElementById('error');
-let pwdInput = document.getElementById('pwd');
-let autoLoginCheckbox = document.getElementById('autoLogin');
+// DOM元素获取：缓存常用元素，避免重复查询
+let error = document.getElementById('error'); // 错误提示元素
+let pwdInput = document.getElementById('pwd'); // 密码输入框
+let autoLoginCheckbox = document.getElementById('autoLogin'); // 自动登录复选框
 
-// 页面加载：自动填充密码+自动登录
+// 页面加载完成执行：初始化逻辑
 window.onload = () => {
-  // 读取本地保存的密码
-  const savedPwd = localStorage.getItem('savedPwd');
-  const isAutoLogin = localStorage.getItem('autoLogin') === 'true';
+  // 自动聚焦到密码输入框：提升用户体验，打开页面即可输入
+  pwdInput.focus();
   
-  // 填充密码到输入框
+  // 读取本地缓存的密码和自动登录状态
+  const savedPwd = localStorage.getItem('savedPwd'); // 保存的密码
+  const isAutoLogin = localStorage.getItem('autoLogin') === 'true'; // 是否自动登录
+  
+  // 填充保存的密码到输入框，同步复选框状态
   if(savedPwd) {
     pwdInput.value = savedPwd;
     autoLoginCheckbox.checked = isAutoLogin;
   }
 
-  // 自动登录（勾选且有保存的密码）
+  // 自动登录逻辑：勾选自动登录且密码正确，直接进入内容区
   if(isAutoLogin && savedPwd === SECRET_KEY) {
     document.getElementById('login').style.display='none';
     document.getElementById('content').style.display='block';
     localStorage.setItem('logged','true');
   } else if(localStorage.getItem('logged') === 'true') {
-    // 兼容原有登录状态
+    // 兼容原有登录状态：已登录但未勾选自动登录，也显示内容区
     document.getElementById('login').style.display='none';
     document.getElementById('content').style.display='block';
   }
 
-  // 回车登录
+  // 回车触发登录：输入密码后按回车即可登录，提升体验
   pwdInput.addEventListener('keyup', e=>{ if(e.key==='Enter') login() });
 }
 
-// 登录逻辑
+// 登录函数：验证密码，处理登录逻辑
 function login(){
-  let val = pwdInput.value.trim();
-  if(val === SECRET_KEY){
-    error.textContent = '';
-    // 保存密码/自动登录状态
+  let val = pwdInput.value.trim(); // 获取并去除密码前后空格
+  if(val === SECRET_KEY){ // 密码验证通过
+    error.textContent = ''; // 清空错误提示
+    // 根据复选框状态保存/清除密码和自动登录状态
     if(autoLoginCheckbox.checked) {
-      localStorage.setItem('savedPwd', val);
-      localStorage.setItem('autoLogin', 'true');
+      localStorage.setItem('savedPwd', val); // 保存密码
+      localStorage.setItem('autoLogin', 'true'); // 标记自动登录
     } else {
-      localStorage.removeItem('savedPwd');
-      localStorage.removeItem('autoLogin');
+      localStorage.removeItem('savedPwd'); // 清除保存的密码
+      localStorage.removeItem('autoLogin'); // 清除自动登录标记
     }
-    // 更新登录状态
+    // 更新登录状态，切换到内容区
     localStorage.setItem('logged','true');
     document.getElementById('login').style.display='none';
     document.getElementById('content').style.display='block';
-  }else{
-    error.textContent = '密码错误，请重新输入';
+  }else{ // 密码错误
+    error.textContent = '密码错误，请重新输入'; // 显示错误提示
   }
 }
 
-// 退出登录
+// 退出登录函数：清除缓存，恢复到登录界面
 function logout(){
   // 清除所有登录相关缓存
   localStorage.removeItem('logged');
   localStorage.removeItem('savedPwd');
   localStorage.removeItem('autoLogin');
-  // 重置界面
+  // 重置界面状态
   document.getElementById('content').style.display='none';
   document.getElementById('login').style.display='block';
-  error.textContent = '';
-  pwdInput.value = '';
-  autoLoginCheckbox.checked = false;
+  error.textContent = ''; // 清空错误提示
+  pwdInput.value = ''; // 清空密码输入框
+  autoLoginCheckbox.checked = false; // 取消复选框勾选
+  pwdInput.focus(); // 退出后重新聚焦到密码框
 }
 </script>
 </body>
