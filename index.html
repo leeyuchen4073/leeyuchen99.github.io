@@ -6,7 +6,46 @@
   <title>登录 - leeyuchen</title>
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
   <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
+  <script>
+    (function() {
+      try {
+        const isDark = localStorage.getItem('darkMode') === 'true';
+        
+        if (isDark) {
+          document.documentElement.classList.add('dark-mode');
+          
+          if (document.body) {
+            document.body.classList.add('hope-ui-dark');
+            document.body.classList.remove('hope-ui-light');
+          } else {
+            document.addEventListener('DOMContentLoaded', function() {
+              document.body.classList.add('hope-ui-dark');
+              document.body.classList.remove('hope-ui-light');
+            });
+          }
+        }
+      } catch (error) {
+        console.log('模式设置读取失败，使用默认白天模式');
+      }
+    })();
+  </script>
   <style>
+    /* 通用样式属性说明：
+       top: 距顶部距离（像素点）
+       left: 距左侧距离（像素点）
+       right: 距右侧距离（像素点）
+       bottom: 距底部距离（像素点）
+       width: 宽度（像素点或百分比）
+       height: 高度（像素点或百分比）
+       padding: 内边距（像素点）
+       margin: 外边距（像素点）
+       border-radius: 边框圆角（像素点）
+       font-size: 字体大小（像素点）
+       background: 背景颜色/图片
+       color: 文字颜色
+       z-index: 层级顺序（数值越大越靠前）
+    */
+    
     * {
       margin: 0;
       padding: 0;
@@ -14,23 +53,24 @@
       transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
+    /* 缓存清除/背景设置保存提示样式 */
     .cache-clear-notice {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(240, 243, 255, 0.9);
-      color: #2d3748;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      opacity: 0;
-      z-index: 9999;
-      animation: fadeInOut 3s ease-in-out;
+      position: fixed; /* 固定定位 */
+      top: 20px; /* 距顶部20像素 */
+      left: 50%; /* 水平居中 */
+      transform: translateX(-50%); /* 水平居中调整 */
+      background: rgba(240, 243, 255, 0.9); /* 背景颜色（白天模式） */
+      color: #2d3748; /* 文字颜色（白天模式） */
+      padding: 10px 20px; /* 内边距：上下10像素，左右20像素 */
+      border-radius: 20px; /* 边框圆角20像素 */
+      font-size: 14px; /* 字体大小14像素 */
+      font-weight: 500; /* 字体粗细 */
+      backdrop-filter: blur(10px); /* 毛玻璃效果 */
+      -webkit-backdrop-filter: blur(10px); /* 毛玻璃效果（兼容） */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* 阴影效果 */
+      opacity: 0; /* 初始透明度0 */
+      z-index: 9999; /* 层级顺序（最高） */
+      animation: fadeInOut 3s ease-in-out; /* 淡入淡出动画 */
     }
     
     .dark-mode .cache-clear-notice {
@@ -47,6 +87,7 @@
     }
 
     :root {
+      /* 白天模式颜色变量 */
       --bg: #e0e7ff;
       --box-bg: rgba(240, 243, 255, 0.8);
       --text: #2d3748;
@@ -63,6 +104,7 @@
       --modal-text: #2d3748;
     }
     .dark-mode {
+      /* 夜间模式颜色变量 */
       --bg: #4a5fc0;
       --box-bg: rgba(80, 94, 189, 0.8);
       --text: #ffffff;
@@ -79,6 +121,7 @@
     }
 
     .hope-ui-light {
+      /* 白天模式背景 */
       background-image: url("https://wp.upx8.com/api.php") !important;
       background-repeat: no-repeat;
       background-size: cover;
@@ -87,6 +130,7 @@
       background-color: #e0e7ff;
     }
     .hope-ui-dark {
+      /* 夜间模式背景 */
       background-image: url("http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg") !important;
       background-repeat: no-repeat;
       background-size: cover;
@@ -99,13 +143,29 @@
       font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       background: var(--bg);
       min-height: 100vh;
-      display: grid;
-      place-items: center;
       padding: 20px;
       font-size: 16px;
       font-weight: 400;
+      overflow: hidden;
+    }
+    .login-container {
+      /* 登录容器 */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .login-container > * {
+      pointer-events: auto;
     }
     .login-box {
+      /* 登录框 */
       width: 100%;
       max-width: 400px;
       background: var(--box-bg);
@@ -117,9 +177,11 @@
       border: 1px solid var(--input-border);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
     }
     .setting-switch,
     .mode-switch {
+      /* 设置和模式切换按钮 */
       position: absolute;
       top: 20px;
       width: 35px;
@@ -151,6 +213,7 @@
       transform: scale(1.1);
     }
     .login-header {
+      /* 登录头部 */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -160,6 +223,7 @@
       font-weight: 700;
     }
     .header-icon {
+      /* 头部图标 */
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -174,6 +238,7 @@
       transform: scale(1.1);
     }
     .header-text {
+      /* 头部文字 */
       background: linear-gradient(135deg, #6c5ce7, #a29bfe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -192,9 +257,11 @@
       background-clip: text;
     }
     .input-item {
+      /* 输入项容器 */
       margin-bottom: 20px;
     }
     .input-item input {
+      /* 密码输入框 */
       width: 100%;
       padding: 10px 12px;
       border-radius: 16px;
@@ -223,12 +290,14 @@
       75% { transform: translateX(6px); }
     }
     .checkbox-wrapper {
+      /* 复选框容器 */
       display: flex;
       justify-content: space-between;
       margin: 12px 0 20px;
       font-size: 14px;
     }
     .checkbox-item {
+      /* 单个复选框 */
       display: flex;
       align-items: center;
       gap: 8px;
@@ -240,6 +309,7 @@
       text-shadow: var(--text-shadow);
     }
     .checkbox-item input {
+      /* 复选框样式 */
       appearance: none;
       width: 18px;
       height: 18px;
@@ -270,10 +340,12 @@
       text-shadow: 0 1px 1px rgba(0,0,0,0.1);
     }
     .btn-group {
+      /* 按钮组 */
       display: flex;
       gap: 10px;
     }
     .btn {
+      /* 通用按钮样式 */
       flex: 1;
       padding: 10px;
       border: none;
@@ -289,6 +361,7 @@
       -webkit-backdrop-filter: blur(8px);
     }
     .btn-clear {
+      /* 清除按钮 */
       background: var(--btn-clear);
       color: var(--text);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
@@ -299,6 +372,7 @@
       background: rgba(138, 160, 249, 0.9);
     }
     .btn-login {
+      /* 登录按钮 */
       background: var(--btn-login);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
     }
@@ -313,6 +387,7 @@
       box-shadow: none !important;
     }
     #error {
+      /* 错误提示 */
       background: linear-gradient(135deg, #ff4444, #ff6666);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -324,6 +399,7 @@
       font-weight: 700;
     }
     .setting-modal {
+      /* 设置弹窗 */
       display: none;
       position: fixed;
       top: 0;
@@ -331,12 +407,13 @@
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.3);
-      z-index: 100;
+      z-index: 2000;
       place-items: center;
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
     }
     .modal-content {
+      /* 弹窗内容 */
       width: 90%;
       max-width: 360px;
       max-height: 90vh;
@@ -351,6 +428,7 @@
       overflow-y: auto;
     }
     .modal-title {
+      /* 弹窗标题 */
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 16px;
@@ -358,9 +436,11 @@
       text-shadow: var(--text-shadow);
     }
     .modal-input {
+      /* 弹窗输入项 */
       margin-bottom: 12px;
     }
     .modal-input label {
+      /* 弹窗标签 */
       display: block;
       margin-bottom: 6px;
       font-weight: 700;
@@ -368,6 +448,7 @@
       font-size: 13px;
     }
     .modal-input input {
+      /* 弹窗输入框 */
       width: 100%;
       padding: 10px 12px;
       border-radius: 8px;
@@ -380,15 +461,18 @@
       -webkit-backdrop-filter: blur(8px);
     }
     .history-section {
+      /* 历史记录区域 */
       margin: 16px 0 10px;
     }
     .history-title {
+      /* 历史记录标题 */
       font-size: 13px;
       font-weight: 700;
       margin-bottom: 8px;
       text-shadow: var(--text-shadow);
     }
     .history-list {
+      /* 历史记录列表 */
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -397,6 +481,7 @@
       width: 100%;
     }
     .history-item {
+      /* 历史记录项 */
       padding: 8px 10px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.6);
@@ -413,11 +498,13 @@
       border-color: var(--input-border);
     }
     .modal-btns {
+      /* 弹窗按钮组 */
       display: flex;
       gap: 10px;
       margin-top: 16px;
     }
     .modal-btn {
+      /* 弹窗按钮 */
       flex: 1;
       padding: 10px;
       border: none;
@@ -430,14 +517,17 @@
       -webkit-backdrop-filter: blur(8px);
     }
     .btn-save {
+      /* 保存按钮 */
       background: var(--btn-login);
       color: #fff;
     }
     .btn-close {
+      /* 关闭按钮 */
       background: var(--btn-clear);
       color: var(--modal-text);
     }
     @media (max-width: 400px) {
+      /* 移动端适配 */
       .login-box {
         border-radius: 16px;
         padding: 12px 20px 28px;
@@ -465,42 +555,44 @@
   </style>
 </head>
 <body class="hope-ui-light">
-  <div class="login-box">
-    <div class="setting-switch" onclick="openSettingModal()"></div>
-    <div class="mode-switch" onclick="toggleMode()"></div>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="setting-switch" onclick="openSettingModal()"></div>
+      <div class="mode-switch" onclick="toggleMode()"></div>
 
-    <!-- 仅保留登录区 -->
-    <div id="login">
-      <div class="login-header">
-        <img 
-          src="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png" 
-          alt="图标" 
-          class="header-icon"
-          onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
-        >
-        <span class="header-text" id="headerTitle" onclick="location.reload()">leeyuchen</span>
-      </div>
+      <!-- 仅保留登录区 -->
+      <div id="login">
+        <div class="login-header">
+          <img 
+            src="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png" 
+            alt="图标" 
+            class="header-icon"
+            onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
+          >
+          <span class="header-text" id="headerTitle" onclick="location.reload()">leeyuchen</span>
+        </div>
 
-      <div class="input-item">
-        <input type="password" id="pwd" placeholder="输入您的密码">
-      </div>
+        <div class="input-item">
+          <input type="password" id="pwd" placeholder="输入您的密码">
+        </div>
 
-      <div class="checkbox-wrapper">
-        <label class="checkbox-item">
-          <input type="checkbox" id="rememberPwd">
-          <span>记住密码</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" id="autoLogin">
-          <span>自动登录</span>
-        </label>
-      </div>
+        <div class="checkbox-wrapper">
+          <label class="checkbox-item">
+            <input type="checkbox" id="rememberPwd">
+            <span>记住密码</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="autoLogin">
+            <span>自动登录</span>
+          </label>
+        </div>
 
-      <div id="error"></div>
+        <div id="error"></div>
 
-      <div class="btn-group">
-        <button class="btn btn-clear" onclick="clearInput()" ondblclick="clearCache()">清除</button>
-        <button class="btn btn-login" onclick="login()">进入主页</button>
+        <div class="btn-group">
+          <button class="btn btn-clear" onclick="clearInput()" ondblclick="clearCache()">清除</button>
+          <button class="btn btn-login" onclick="login()">进入主页</button>
+        </div>
       </div>
     </div>
   </div>
@@ -611,7 +703,6 @@
         const cache = await loadCache();
         const savedPwd = cache?.savedPwd;
         const isAutoLogin = cache?.autoLogin || false;
-        const isDark = cache?.darkMode || false;
         
         if (savedPwd) {
           realSavedPwd = savedPwd;
@@ -619,14 +710,12 @@
           rememberPwd.checked = true;
         }
         
-        if (isAutoLogin && savedPwd === '123456') {
-          login();
-        }
+        // 设置自动登录复选框状态
+        autoLogin.checked = isAutoLogin;
         
-        if (isDark) {
-          bodyEl.classList.remove('hope-ui-light');
-          bodyEl.classList.add('hope-ui-dark');
-          document.documentElement.classList.add('dark-mode');
+        // 自动登录逻辑
+        if (isAutoLogin && savedPwd) {
+          login();
         }
       } catch (error) {
         console.error('初始化缓存读取失败:', error);
@@ -676,16 +765,20 @@
       realSavedPwd = null;
     }
 
+    function showTopNotice(message) {
+      const notice = document.createElement('div');
+      notice.className = 'cache-clear-notice';
+      notice.textContent = message;
+      document.body.appendChild(notice);
+      setTimeout(() => notice.remove(), 3000);
+    }
+
     async function clearCache() {
       try {
         await clearCacheData();
+        localStorage.removeItem('darkMode');
         clearInput();
-        
-        const notice = document.createElement('div');
-        notice.className = 'cache-clear-notice';
-        notice.textContent = '缓存已清除';
-        document.body.appendChild(notice);
-        setTimeout(() => notice.remove(), 3000);
+        showTopNotice('缓存已清除');
       } catch (error) {
         console.error('清除缓存失败:', error);
       }
@@ -697,6 +790,7 @@
       bodyEl.classList.toggle('hope-ui-dark', isDark);
       
       try {
+        localStorage.setItem('darkMode', isDark);
         const existingCache = await loadCache() || {};
         await saveCache({ ...existingCache, darkMode: isDark });
       } catch (error) {
@@ -711,7 +805,7 @@
       settingModal.style.display = 'none';
     }
     function saveBgSettings() {
-      alert('背景设置已保存！');
+      showTopNotice('背景设置已保存');
       closeSettingModal();
     }
     function loadHistory() {}
