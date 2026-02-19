@@ -1175,6 +1175,38 @@
     <!-- ====================== 头部交互脚本区 ====================== -->
     <!-- 模式切换优先加载 -->
     <script>
+        // 存储管理工具（简化版，用于头部脚本）
+        const SimpleStorageManager = {
+            getItem: function(key, defaultValue = '') {
+                try {
+                    const value = localStorage.getItem(key);
+                    return value !== null ? value : defaultValue;
+                } catch (error) {
+                    console.error('获取数据失败:', error);
+                    return defaultValue;
+                }
+            }
+        };
+        
+        /**
+         * 应用背景图片
+         * @description 根据当前模式应用对应的背景图片
+         */
+        function applyBackgroundImages() {
+            const lightBgUrl = SimpleStorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
+            const darkBgUrl = SimpleStorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
+            
+            // 更新CSS变量或直接设置背景
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            const bodyEl = document.body;
+            
+            if (isDark) {
+                bodyEl.style.backgroundImage = `url('${darkBgUrl}')`;
+            } else {
+                bodyEl.style.backgroundImage = `url('${lightBgUrl}')`;
+            }
+        }
+        
         // 全局模式管理对象
         const ModeManager = {
             // 初始化昼夜模式
@@ -1207,6 +1239,8 @@
                 }
                 // 保存模式状态
                 localStorage.setItem('darkMode', isDark);
+                // 应用背景图片
+                applyBackgroundImages();
             },
 
             // 切换模式
@@ -1279,7 +1313,7 @@
                 <a class="nav-link" href="#profile">个人资料</a>
                 <a class="nav-link" href="#config">内容配置</a>
                 <a class="nav-link" href="#tools">工具箱</a>
-                <a class="nav-link" onclick="handleLoginLink()">登录</a>
+                <a class="nav-link" onclick="logout()">退出</a>
                 <a class="nav-link" href="https://github.com/leeyuchen4073/leeyuchen.github.io" target="_blank">GitHub</a>
             </div>
         </div>
@@ -1838,6 +1872,9 @@
         const SECRET_KEY = "123456"; 
         // 历史记录最大数量
         const MAX_HISTORY = 10;
+        // 加密相关常量
+        const ENCRYPTION_KEY = "leeyuchen_cache_key_2026";
+        const CACHE_KEY = "data.db-chache";
         
         /**
          * DOM 元素引用
@@ -1934,6 +1971,59 @@
                 }
             }
         };
+        
+        /**
+         * 加密相关函数
+         * @description 提供加密缓存的操作函数
+         */
+        async function getKey() {
+            const encoder = new TextEncoder();
+            const keyMaterial = await window.crypto.subtle.importKey('raw', encoder.encode(ENCRYPTION_KEY), { name: 'PBKDF2' }, false, ['deriveKey']);
+            return window.crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt: encoder.encode('leeyuchen_salt'), iterations: 100000, hash: 'SHA-256' },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt', 'decrypt']
+            );
+        }
+        
+        async function encrypt(data) {
+            const key = await getKey();
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const encoder = new TextEncoder();
+            const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, encoder.encode(JSON.stringify(data)));
+            return {
+                iv: Array.from(iv),
+                data: Array.from(new Uint8Array(encrypted))
+            };
+        }
+        
+        async function decrypt(encryptedData) {
+            const key = await getKey();
+            const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) }, key, new Uint8Array(encryptedData.data));
+            const decoder = new TextDecoder();
+            return JSON.parse(decoder.decode(decrypted));
+        }
+        
+        async function saveCache(data) {
+            try {
+                const encrypted = await encrypt(data);
+                localStorage.setItem(CACHE_KEY, JSON.stringify(encrypted));
+            } catch (error) {
+                console.error('保存缓存失败:', error);
+            }
+        }
+        
+        async function loadCache() {
+            try {
+                const encrypted = localStorage.getItem(CACHE_KEY);
+                return encrypted ? await decrypt(JSON.parse(encrypted)) : null;
+            } catch (error) {
+                console.error('加载缓存失败:', error);
+                return null;
+            }
+        }
 
         /**
          * 简单的哈希函数
@@ -1988,22 +2078,134 @@
          * @description 处理背景设置弹窗的显示和关闭
          */
         function openSettingModal() {
+            // 加载当前背景图片设置
+            const lightBgUrl = StorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
+            const darkBgUrl = StorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
+            
+            if (lightBgUrlInput) lightBgUrlInput.value = lightBgUrl;
+            if (darkBgUrlInput) darkBgUrlInput.value = darkBgUrl;
+            
+            // 加载背景图片历史记录
+            loadBgHistory();
+            
             openModal('settingModal');
         }
         function closeSettingModal() {
             closeModal('settingModal');
         }
         function saveBgSettings() {
-            alert('背景设置已保存！');
+            const lightBgUrl = lightBgUrlInput.value.trim();
+            const darkBgUrl = darkBgUrlInput.value.trim();
+            
+            // 保存背景图片设置
+            StorageManager.setItem('lightBgUrl', lightBgUrl);
+            StorageManager.setItem('darkBgUrl', darkBgUrl);
+            
+            // 保存到历史记录
+            saveToHistory('lightBgHistory', lightBgUrl);
+            saveToHistory('darkBgHistory', darkBgUrl);
+            
+            // 应用背景图片
+            applyBackgroundImages();
+            
             closeModal('settingModal');
+            alert('背景设置已保存！');
+        }
+        
+        /**
+         * 应用背景图片
+         * @description 根据当前模式应用对应的背景图片
+         */
+        function applyBackgroundImages() {
+            const lightBgUrl = StorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
+            const darkBgUrl = StorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
+            
+            // 更新CSS变量或直接设置背景
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            const bodyEl = document.body;
+            
+            if (isDark) {
+                bodyEl.style.backgroundImage = `url('${darkBgUrl}')`;
+            } else {
+                bodyEl.style.backgroundImage = `url('${lightBgUrl}')`;
+            }
+        }
+        
+        /**
+         * 保存到历史记录
+         * @description 将背景图片URL保存到历史记录
+         * @param {string} key - 历史记录键名
+         * @param {string} url - 背景图片URL
+         */
+        function saveToHistory(key, url) {
+            if (!url) return;
+            
+            const history = StorageManager.getObject(key, []);
+            // 移除重复项
+            const filteredHistory = history.filter(item => item !== url);
+            // 添加到开头
+            filteredHistory.unshift(url);
+            // 限制历史记录数量
+            const limitedHistory = filteredHistory.slice(0, MAX_HISTORY);
+            // 保存历史记录
+            StorageManager.setObject(key, limitedHistory);
+        }
+        
+        /**
+         * 加载背景图片历史记录
+         * @description 加载并显示背景图片历史记录
+         */
+        function loadBgHistory() {
+            if (!lightHistoryList || !darkHistoryList) return;
+            
+            // 加载白天模式历史记录
+            const lightHistory = StorageManager.getObject('lightBgHistory', []);
+            lightHistoryList.innerHTML = '';
+            lightHistory.forEach(url => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.textContent = url;
+                item.style.cursor = 'pointer';
+                item.onclick = () => {
+                    lightBgUrlInput.value = url;
+                };
+                lightHistoryList.appendChild(item);
+            });
+            
+            // 加载夜间模式历史记录
+            const darkHistory = StorageManager.getObject('darkBgHistory', []);
+            darkHistoryList.innerHTML = '';
+            darkHistory.forEach(url => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.textContent = url;
+                item.style.cursor = 'pointer';
+                item.onclick = () => {
+                    darkBgUrlInput.value = url;
+                };
+                darkHistoryList.appendChild(item);
+            });
         }
         
         /**
          * 退出登录逻辑
          * @description 处理用户退出登录的逻辑
          */
-        function logout() {
-            StorageManager.removeItem('isLogin');
+        async function logout() {
+            try {
+                // 加载现有缓存
+                const cache = await loadCache() || {};
+                // 取消自动登录状态
+                const updatedCache = {
+                    ...cache,
+                    autoLogin: false,
+                    isLogin: false
+                };
+                // 保存更新后的缓存
+                await saveCache(updatedCache);
+            } catch (error) {
+                console.error('退出登录时更新缓存失败:', error);
+            }
             // 重定向到登录页面
             window.location.href = 'index.html';
         }
