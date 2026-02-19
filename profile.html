@@ -8,20 +8,25 @@
     <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
     
     <!-- ====================== 头部资源引入区 ====================== -->
-    <!-- 1. 基础兼容 Polyfill -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.replaceAll"></script>
-
-    <!-- 2. 字体引入 -->
+    <!-- 1. 字体资源 -->
+    <!-- 引入LXGW WenKai字体，用于全局字体显示 -->
     <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" />
-
-    <!-- 3. 计数器（不蒜子） -->
+    
+    <!-- 2. 统计工具 -->
+    <!-- 不蒜子计数器，用于统计网站访问量 -->
     <script async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
-
-    <!-- 4. 图标字体（Font6） -->
+    
+    <!-- 3. 图标库 -->
+    <!-- Font Awesome 6 Pro，用于网站图标显示 -->
     <link type='text/css' rel="stylesheet" href="https://npm.elemecdn.com/font6pro@6.0.1/css/fontawesome.min.css" media='all'>
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
-
-    <!-- 5. 音乐播放器（APlayer + MetingJS） -->
+    
+    <!-- 4. 基础兼容 -->
+    <!-- Polyfill，提供浏览器兼容性支持 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.replaceAll"></script>
+    
+    <!-- 5. 音乐播放器 -->
+    <!-- APlayer + MetingJS，用于音乐播放功能 -->
     <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">
     <script src="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
     <script src="https://npm.elemecdn.com/meting2@0.0.1/js/Meting.min.js"></script>
@@ -100,7 +105,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-fill-color: transparent;
         }
         
         .nav-links {
@@ -264,20 +268,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        /* 主列表白天模式透明 */
-        .hope-ui-light .config-item {
-            background-color: rgba(255,255,255,0) !important;
-            backdrop-filter: blur(10px) !important;
-        }
-        
-        /* 主列表夜间模式透明 */
-        .hope-ui-dark .config-item {
-            background-color: rgb(0 0 0 / 50%) !important;
-            backdrop-filter: blur(10px) !important;
-            color: #ddd;
-        }
-        
-        /* 确保配置项目使用与用户指定类名相同的样式 */
+        /* 配置项目样式 */
         .config-item {
             background-color: rgba(255,255,255,0) !important;
             backdrop-filter: blur(10px) !important;
@@ -286,6 +277,7 @@
         .hope-ui-dark .config-item {
             background-color: rgb(0 0 0 / 50%) !important;
             backdrop-filter: blur(10px) !important;
+            color: #ddd;
         }
         
         .config-item-title {
@@ -347,20 +339,7 @@
             transition: all 0.3s ease;
         }
         
-        /* 主列表白天模式透明 */
-        .hope-ui-light .tool-item {
-            background-color: rgba(255,255,255,0) !important;
-            backdrop-filter: blur(10px) !important;
-        }
-        
-        /* 主列表夜间模式透明 */
-        .hope-ui-dark .tool-item {
-            background-color: rgb(0 0 0 / 50%) !important;
-            backdrop-filter: blur(10px) !important;
-            color: #ddd;
-        }
-        
-        /* 确保工具项目使用与用户指定类名相同的样式 */
+        /* 工具项目样式 */
         .tool-item {
             background-color: rgba(255,255,255,0) !important;
             backdrop-filter: blur(10px) !important;
@@ -369,6 +348,7 @@
         .hope-ui-dark .tool-item {
             background-color: rgb(0 0 0 / 50%) !important;
             backdrop-filter: blur(10px) !important;
+            color: #ddd;
         }
         
         .tool-item:hover {
@@ -688,6 +668,18 @@
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        /* 个人简介编辑弹窗配色 */
+        .profile-modal {
+            background: rgba(59, 130, 246, 0.8);
+            color: white;
+        }
+
+        .hope-ui-dark .profile-modal {
+            background: rgba(37, 99, 235, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
         .modal-content:hover {
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
@@ -828,15 +820,12 @@
 
         /* 底部信息样式 */
         .footer-info {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: static;
             text-align: center;
             padding: 15px;
             background: transparent !important;
             backdrop-filter: none !important;
-            z-index: 1000;
+            margin-top: 10px;
         }
         
         .footer-info a {
@@ -857,6 +846,270 @@
             transform: translateY(-2px);
         }
 
+        /* 登录页面样式 */
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            background: var(--box-bg, rgba(80, 94, 189, 0.8));
+            border-radius: 20px;
+            padding: 16px 28px 32px;
+            color: var(--text, #ffffff);
+            position: relative;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border: 1px solid var(--input-border, #7a8fe8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .setting-switch {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--input-bg, rgba(106, 127, 224, 0.8));
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .setting-switch::after {
+            content: "⚙️";
+        }
+        
+        .setting-switch:hover {
+            transform: scale(1.1);
+        }
+        
+        .mode-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--input-bg, rgba(106, 127, 224, 0.8));
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .mode-switch::after {
+            content: "☀️";
+        }
+        
+        .dark-mode .mode-switch::after {
+            content: "🌙";
+        }
+        
+        .mode-switch:hover {
+            transform: scale(1.1);
+        }
+        
+        .login-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 16px 0 28px 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid var(--input-border, #7a8fe8);
+            cursor: pointer;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+        
+        .header-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .header-text {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            cursor: pointer;
+            text-shadow: none;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+        
+        .header-text:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #8070f0, #b8b0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .input-item {
+            margin-bottom: 20px;
+        }
+        
+        .input-item input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 16px;
+            border: 1px solid var(--input-border, #7a8fe8);
+            outline: none;
+            font-size: 15px;
+            background: var(--input-bg, rgba(106, 127, 224, 0.8));
+            color: var(--text, #ffffff);
+            font-weight: 400;
+            backface-visibility: hidden;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .input-item input::placeholder {
+            color: var(--text, #ffffff);
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        .input-item input:focus {
+            border-color: var(--checkbox-checked, #6c5ce7);
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        
+        .checkbox-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0 20px;
+            font-size: 14px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 400;
+        }
+        
+        .checkbox-item span {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
+        .checkbox-item input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: var(--checkbox-bg, rgba(106, 127, 224, 0.8));
+            border: 1px solid var(--input-border, #7a8fe8);
+            position: relative;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .checkbox-item input:checked {
+            background: var(--checkbox-checked, #6c5ce7);
+            border-color: var(--checkbox-checked, #6c5ce7);
+            transform: scale(1.05);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        
+        .checkbox-item input:checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .btn-clear {
+            background: var(--btn-clear, rgba(180, 188, 208, 0.8));
+            color: var(--text, #ffffff);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(138, 160, 249, 0.9);
+        }
+        
+        .btn-login {
+            background: var(--btn-login, #6c5ce7);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        #error {
+            color: #ff4444;
+            font-size: 13px;
+            text-align: center;
+            margin: 8px 0;
+            height: 18px;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
         /* 移动端适配 */
         @media (max-width: 768px) {
             .main-container {
@@ -893,24 +1146,46 @@
                 margin: 0 5px;
                 font-size: 12px;
             }
+            
+            /* 登录页面移动端适配 */
+            .login-box {
+                border-radius: 16px;
+                padding: 12px 20px 28px;
+            }
+            
+            .login-header {
+                font-size: 22px;
+                margin: 12px 0 24px 0;
+            }
+            
+            .header-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .setting-switch, .mode-switch {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+                top: 12px;
+            }
         }
     </style>
 
     <!-- ====================== 头部交互脚本区 ====================== -->
     <!-- 模式切换优先加载 -->
     <script>
-        // 优先初始化昼夜模式
-        (function() {
-            const bodyEl = document.body;
-            
+        // 全局模式管理对象
+        const ModeManager = {
             // 初始化昼夜模式
-            function initDarkMode() {
+            initDarkMode: function() {
                 const isDark = localStorage.getItem('darkMode') === 'true';
-                updateMode(isDark);
-            }
+                this.updateMode(isDark);
+            },
 
             // 更新模式
-            function updateMode(isDark) {
+            updateMode: function(isDark) {
+                const bodyEl = document.body;
                 if (isDark) {
                     bodyEl.classList.remove('hope-ui-light');
                     bodyEl.classList.add('hope-ui-dark');
@@ -930,11 +1205,20 @@
                         modeIcon.className = 'fas fa-sun';
                     }
                 }
+                // 保存模式状态
+                localStorage.setItem('darkMode', isDark);
+            },
+
+            // 切换模式
+            toggleMode: function() {
+                const currentMode = localStorage.getItem('darkMode') === 'true';
+                const newMode = !currentMode;
+                this.updateMode(newMode);
             }
-            
-            // 立即执行模式初始化
-            initDarkMode();
-        }());
+        };
+        
+        // 立即执行模式初始化
+        ModeManager.initDarkMode();
     </script>
     
     <!-- 鼠标点击爱心文字特效 -->
@@ -979,6 +1263,49 @@
 </head>
 
 <body class="hope-ui-light">
+    <!-- 登录页面 -->
+    <div id="login-page" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;">
+        <div class="login-box">
+            <div class="setting-switch" onclick="openSettingModal()"></div>
+            <div class="mode-switch" onclick="toggleMode()"></div>
+
+            <!-- 登录区 -->
+            <div id="login">
+                <div class="login-header">
+                    <img 
+                        src="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png" 
+                        alt="图标" 
+                        class="header-icon"
+                        onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
+                    >
+                    <span class="header-text" id="headerTitle" onclick="location.reload()">leeyuchen</span>
+                </div>
+
+                <div class="input-item">
+                    <input type="password" id="pwd" placeholder="输入您的密码">
+                </div>
+
+                <div class="checkbox-wrapper">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="rememberPwd">
+                        <span>记住密码</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="autoLogin">
+                        <span>自动登录</span>
+                    </label>
+                </div>
+
+                <div id="error"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-clear" onclick="clearInput()" ondblclick="clearCache()">清除</button>
+                    <button class="btn btn-login" onclick="login()">进入主页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 模式切换和设置按钮 -->
     <!-- ====================== 页面主体区 ====================== -->
     <div class="main-container">
@@ -993,7 +1320,7 @@
                 <a class="nav-link" href="#profile">个人资料</a>
                 <a class="nav-link" href="#config">内容配置</a>
                 <a class="nav-link" href="#tools">工具箱</a>
-                <a class="nav-link" href="login.html">登录</a>
+                <a class="nav-link" onclick="handleLoginLink()">登录</a>
                 <a class="nav-link" href="https://github.com/leeyuchen4073/leeyuchen.github.io" target="_blank">GitHub</a>
             </div>
         </div>
@@ -1010,8 +1337,8 @@
                 <div class="profile-stats">
                     <span>📍 冰岛</span>
                     <span>💻 网络爱好者</span>
-                    <span>📧 <a href="mailto:254036252@qq.com" style="color: inherit; text-decoration: none; hover: underline;">254036252@qq.com</a></span>
-                    <span>🔗 <a href="https://leeyuchen.top" target="_blank" style="color: inherit; text-decoration: none; hover: underline;">leeyuchen.top</a></span>
+                    <span>📧 <a href="mailto:254036252@qq.com" style="color: inherit; text-decoration: none;">254036252@qq.com</a></span>
+                    <span>🔗 <a href="https://leeyuchen.top" target="_blank" style="color: inherit; text-decoration: none;">leeyuchen.top</a></span>
                 </div>
             </div>
         </div>
@@ -1056,7 +1383,7 @@
                     <div class="tool-icon"><i class="fas fa-code" style="color:#409EFF;"></i></div>
                     <div class="tool-name">代码工具</div>
                 </div>
-                <div class="tool-item">
+                <div class="tool-item" onclick="window.open('https://realfavicongenerator.net/', '_blank')">
                     <div class="tool-icon"><i class="fas fa-image" style="color:#00AC6A;"></i></div>
                     <div class="tool-name">图片工具</div>
                 </div>
@@ -1102,20 +1429,20 @@
                 </span> "
             </div>
         </div>
-    </div>
-
-    <!-- 底部信息 -->
-    <div class="footer-info">
-        <div style="text-align: center; padding: 10px;">
-            <a href="http://www.yujn.cn/" target="_blank"><i class="fab fa-qq" style="color:#4488D1"></i> 工具</a> |
-            <a href="https://api.uomg.com/api/rand.music?sort=%E7%83%AD%E6%AD%8C%E6%A6%9C&format=mp3" target="_blank"><i class="fa-duotone fa-envelope-open" style="color:#409EFF"></i> 邮箱</a> |
-            <a href="https://video.taotutu.cn/" target="_blank"><i class="fas fa-edit" style="color:#409EFF"></i> 影视</a> |
-            <a href="login.html" target="_blank"><i class="fa fa-cloud-download" style="color:#00AC6A;"></i> 登录</a> |
-            <a href="index.html" target="_blank"><i class="fa-solid fa-folder-gear" style="color:#a061d4;"></i> 管理</a> |
-            <a href="https://alist.nn.ci/zh/" target="_blank"><i class="fa-solid fa-copyright" style="color:#409EFF;"></i> Alist</a>
-        </div>
-        <div style="text-align: center; padding: 10px;">
-            <a href="https://icp.gov.moe/" target="_blank"><i class="fa-solid fa-shield-check" style="color:#409EFF;"></i> ICP备2025000000号-萌</a>
+        
+        <!-- 底部信息 -->
+        <div class="footer-info">
+            <div style="text-align: center; padding: 10px;">
+                <a href="http://www.yujn.cn/" target="_blank"><i class="fab fa-qq" style="color:#4488D1"></i> 工具</a> |
+                <a href="https://api.uomg.com/api/rand.music?sort=%E7%83%AD%E6%AD%8C%E6%A6%9C&format=mp3" target="_blank"><i class="fa-duotone fa-envelope-open" style="color:#409EFF"></i> 邮箱</a> |
+                <a href="https://video.taotutu.cn/" target="_blank"><i class="fas fa-edit" style="color:#409EFF"></i> 影视</a> |
+                <a onclick="handleLoginLink()"><i class="fa fa-cloud-download" style="color:#00AC6A;"></i> 登录</a> |
+                <a href="index.html" target="_blank"><i class="fa-solid fa-folder-gear" style="color:#a061d4;"></i> 管理</a> |
+                <a href="https://alist.nn.ci/zh/" target="_blank"><i class="fa-solid fa-copyright" style="color:#409EFF;"></i> Alist</a>
+            </div>
+            <div style="text-align: center; padding: 10px;">
+                <a href="https://icp.gov.moe/" target="_blank"><i class="fa-solid fa-shield-check" style="color:#409EFF;"></i> ICP备2025000000号-萌</a>
+            </div>
         </div>
     </div>
 
@@ -1195,6 +1522,33 @@
             </div>
         </div>
     </div>
+    
+    <!-- 个人简介编辑弹窗 -->
+    <div class="setting-modal" id="profileModal">
+        <div class="modal-content profile-modal">
+            <div class="modal-title">编辑个人简介</div>
+            <div class="modal-input">
+                <label>姓名</label>
+                <input type="text" id="profileName" placeholder="输入您的姓名" value="leeyuchen">
+            </div>
+            <div class="modal-input">
+                <label>个人简介</label>
+                <textarea id="profileBio" placeholder="输入您的个人简介" style="width: 100%; padding: 12px; border: none; border-radius: 10px; background: rgba(255, 255, 255, 0.2); color: white; font-size: 14px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1); box-sizing: border-box; height: 120px;">你好，我是李雨辰，一名热爱技术的开发者。专注于前端开发、UI设计和用户体验优化。欢迎访问我的个人网站，希望你在这里度过愉快的时光！</textarea>
+            </div>
+            <div class="modal-input">
+                <label>所在地</label>
+                <input type="text" id="profileLocation" placeholder="输入您的所在地" value="冰岛">
+            </div>
+            <div class="modal-input">
+                <label>职业</label>
+                <input type="text" id="profileOccupation" placeholder="输入您的职业" value="网络爱好者">
+            </div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-save" onclick="saveProfileSettings()">保存设置</button>
+                <button class="modal-btn btn-close" onclick="closeProfileModal()">关闭</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ====================== 尾部脚本区 ====================== -->
     <!-- 音乐播放器 -->
@@ -1202,41 +1556,116 @@
         <div id="musicPlayer"></div>
     </div>
 
-    <!-- 今日诗词API -->
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <!-- 异步加载非关键API和资源 -->
+    <script async>
+        // 今日诗词API
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
+            script.charset = 'utf-8';
+            script.onload = function() {
+                console.log('今日诗词API加载完成');
+            };
+            document.head.appendChild(script);
+        })();
 
-    <!-- 一言API -->
-    <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+        // 一言API
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto';
+            script.defer = true;
+            script.onload = function() {
+                console.log('一言API加载完成');
+            };
+            document.head.appendChild(script);
+        })();
 
-    <!-- 访客IP显示 -->
-    <script>
-        fetch('https://api.vore.top/api/IPdata')
-            .then(response => response.json())
-            .then(data => {
-                const ip = data.ipinfo.text;
-                const province = data.ipdata.info1;
-                const city = data.ipdata.info2;
-                const isp = data.ipdata.isp;
-                const area_code = data.ipinfo.cnip;
-                const nation = data.ipdata.info1;
-                let welcomeMessage;
-                if (area_code) {
-                    welcomeMessage = `欢迎 ${province}${city}${isp} (IP: ${ip}) 的小伙伴访问本站`;
-                } else {
-                    welcomeMessage = `欢迎 ${nation}${isp} (IP: ${ip}) 的小伙伴访问本站`;
-                }
-                document.getElementById('welcome').textContent = welcomeMessage;
-            })
-            .catch(error => {
-                console.error("获取IP信息失败：", error);
-                document.getElementById('welcome').textContent = "欢迎访问本站（IP信息获取失败）";
-            });
+        // 访客IP显示（异步）
+        window.addEventListener('load', function() {
+            // 延迟执行，确保页面其他内容已加载
+            setTimeout(function() {
+                // 主API：使用返回中国地址的API
+                fetch('https://v2.xxapi.cn/api/ip')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('主API返回结果:', data);
+                        // 处理主API返回格式
+                        if (data.code === 200 && data.data) {
+                            const ip = data.data.ip;
+                            const address = data.data.address || '';
+                            const isp = data.data.isp || '';
+                            const welcomeMessage = `欢迎 ${address}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                            
+                            const welcomeEl = document.getElementById('welcome');
+                            if (welcomeEl) {
+                                welcomeEl.textContent = welcomeMessage;
+                            }
+                        } else {
+                            throw new Error('主API返回格式不正确');
+                        }
+                    })
+                    .catch(error => {
+                        console.error("主API获取IP信息失败：", error);
+                        // 失败时使用备用API (ip-api.com)
+                        fetch('http://demo.ip-api.com/json/?lang=zh-CN')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('备用API返回结果:', data);
+                                if (data.status === 'success') {
+                                    const ip = data.query;
+                                    const city = data.city || '';
+                                    const region = data.regionName || '';
+                                    const country = data.country || '';
+                                    const isp = data.isp || '';
+                                    let welcomeMessage;
+                                    
+                                    if (country === '中国') {
+                                        // 中国用户显示详细位置
+                                        welcomeMessage = `欢迎 ${region}${city}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                                    } else {
+                                        // 外国用户显示国家
+                                        welcomeMessage = `欢迎 ${country}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                                    }
+                                    
+                                    const welcomeEl = document.getElementById('welcome');
+                                    if (welcomeEl) {
+                                        welcomeEl.textContent = welcomeMessage;
+                                    }
+                                } else {
+                                    throw new Error('备用API返回失败状态');
+                                }
+                            })
+                            .catch(backupError => {
+                                console.error("备用API获取失败：", backupError);
+                                // 再次失败时使用ipify API获取仅IP信息
+                                fetch('https://api.ipify.org?format=json')
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('ipify API返回结果:', data);
+                                        const ip = data.ip;
+                                        const welcomeMessage = `欢迎 (IP: ${ip}) 的小伙伴访问本站`;
+                                        const welcomeEl = document.getElementById('welcome');
+                                        if (welcomeEl) {
+                                            welcomeEl.textContent = welcomeMessage;
+                                        }
+                                    })
+                                    .catch(finalError => {
+                                        console.error("所有API获取失败：", finalError);
+                                        const welcomeEl = document.getElementById('welcome');
+                                        if (welcomeEl) {
+                                            welcomeEl.textContent = "欢迎访问本站";
+                                        }
+                                    });
+                            });
+                    });
+            }, 100); // 延迟1秒执行，避免阻塞页面加载
+        });
     </script>
 
     <!-- 站点运行时间 -->
     <script>
         function updateRuntime() {
-            const startDate = new Date('2024-11-30T00:00:00');
+            const startDate = new Date('2026-02-20T00:00:00');
             const now = new Date();
             const elapsed = now - startDate;
 
@@ -1253,92 +1682,488 @@
 
     <!-- 配置功能 -->
     <script>
+        // 工具函数：打开模态窗口
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+        
+        // 工具函数：关闭模态窗口
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
         function editProfile() {
-            alert('编辑个人资料功能开发中...');
+            openModal('profileModal');
         }
         
+        // 音乐配置功能
         function configMusic() {
-            alert('音乐配置功能开发中...');
+            openMusicModal();
         }
         
+        // 工具管理功能
         function manageTools() {
-            alert('工具管理功能开发中...');
+            // 打开工具管理模态窗口
+            openToolManagerModal();
+        }
+        
+        // 工具管理模态窗口
+        function openToolManagerModal() {
+            // 创建工具管理模态窗口
+            const modal = document.createElement('div');
+            modal.className = 'setting-modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content profile-modal">
+                    <div class="modal-title">工具管理</div>
+                    <div class="modal-input">
+                        <label>添加新工具</label>
+                        <input type="text" id="newToolName" placeholder="工具名称">
+                    </div>
+                    <div class="modal-input">
+                        <label>工具图标 (Font Awesome类名)</label>
+                        <input type="text" id="newToolIcon" placeholder="例如: fas fa-code">
+                    </div>
+                    <div class="modal-input">
+                        <label>工具链接</label>
+                        <input type="text" id="newToolUrl" placeholder="工具URL地址">
+                    </div>
+                    <div class="modal-input">
+                        <label>图标颜色</label>
+                        <input type="text" id="newToolColor" placeholder="例如: #409EFF">
+                    </div>
+                    <div class="modal-btns">
+                        <button class="modal-btn btn-save" onclick="addNewTool()">添加工具</button>
+                        <button class="modal-btn btn-close" onclick="this.closest('.setting-modal').remove()">关闭</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        // 添加新工具
+        function addNewTool() {
+            const toolName = document.getElementById('newToolName').value;
+            const toolIcon = document.getElementById('newToolIcon').value;
+            const toolUrl = document.getElementById('newToolUrl').value;
+            const toolColor = document.getElementById('newToolColor').value;
+            
+            if (!toolName || !toolIcon || !toolUrl) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            // 获取现有工具列表
+            const tools = StorageManager.getObject('tools', []);
+            
+            // 添加新工具
+            tools.push({
+                id: Date.now(),
+                name: toolName,
+                icon: toolIcon,
+                url: toolUrl,
+                color: toolColor || '#409EFF'
+            });
+            
+            // 保存工具列表
+            StorageManager.setObject('tools', tools);
+            
+            // 更新工具网格
+            updateToolsGrid();
+            
+            // 关闭模态窗口
+            document.querySelector('.setting-modal').remove();
+            alert('工具添加成功！');
+        }
+        
+        // 更新工具网格
+        function updateToolsGrid() {
+            const tools = StorageManager.getObject('tools', []);
+            const toolsGrid = document.querySelector('.tools-grid');
+            
+            if (!toolsGrid) return;
+            
+            // 清空现有工具
+            toolsGrid.innerHTML = '';
+            
+            // 添加默认工具
+            const defaultTools = [
+                { id: 1, name: '代码工具', icon: 'fas fa-code', url: '', color: '#409EFF' },
+                { id: 2, name: '图片工具', icon: 'fas fa-image', url: 'https://realfavicongenerator.net/', color: '#00AC6A' },
+                { id: 3, name: 'PDF工具', icon: 'fas fa-file-pdf', url: '', color: '#FF4D4F' },
+                { id: 4, name: '计算器', icon: 'fas fa-calculator', url: '', color: '#FAAD14' },
+                { id: 5, name: '时间工具', icon: 'fas fa-clock', url: '', color: '#722ED1' },
+                { id: 6, name: '网络工具', icon: 'fas fa-globe', url: '', color: '#1890FF' }
+            ];
+            
+            // 合并默认工具和自定义工具
+            const allTools = [...defaultTools, ...tools];
+            
+            // 添加工具到网格
+            allTools.forEach(tool => {
+                const toolItem = document.createElement('div');
+                toolItem.className = 'tool-item';
+                if (tool.url) {
+                    toolItem.onclick = () => window.open(tool.url, '_blank');
+                }
+                toolItem.innerHTML = `
+                    <div class="tool-icon"><i class="${tool.icon}" style="color:${tool.color};"></i></div>
+                    <div class="tool-name">${tool.name}</div>
+                `;
+                toolsGrid.appendChild(toolItem);
+            });
+        }
+        
+        // 个人简介编辑相关函数
+        function closeProfileModal() {
+            closeModal('profileModal');
+        }
+        
+        function saveProfileSettings() {
+            const profileName = document.getElementById('profileName').value;
+            const profileBio = document.getElementById('profileBio').value;
+            const profileLocation = document.getElementById('profileLocation').value;
+            const profileOccupation = document.getElementById('profileOccupation').value;
+            
+            // 保存到localStorage
+            StorageManager.setItem('profileName', profileName);
+            StorageManager.setItem('profileBio', profileBio);
+            StorageManager.setItem('profileLocation', profileLocation);
+            StorageManager.setItem('profileOccupation', profileOccupation);
+            
+            // 更新页面显示
+            updateProfileDisplay();
+            
+            // 关闭弹窗
+            closeProfileModal();
+            alert('个人简介已保存！');
+        }
+        
+        function updateProfileDisplay() {
+            const profileName = StorageManager.getItem('profileName') || 'leeyuchen';
+            const profileBio = StorageManager.getItem('profileBio') || '你好，我是李雨辰，一名热爱技术的开发者。专注于前端开发、UI设计和用户体验优化。欢迎访问我的个人网站，希望你在这里度过愉快的时光！';
+            const profileLocation = StorageManager.getItem('profileLocation') || '冰岛';
+            const profileOccupation = StorageManager.getItem('profileOccupation') || '网络爱好者';
+            
+            // 更新页面元素
+            document.querySelector('.profile-name').textContent = profileName;
+            document.querySelector('.profile-bio').textContent = profileBio;
+            
+            // 更新所在地和职业
+            const profileStats = document.querySelector('.profile-stats');
+            if (profileStats) {
+                const statsChildren = profileStats.children;
+                if (statsChildren.length > 0) {
+                    statsChildren[0].textContent = `📍 ${profileLocation}`;
+                }
+                if (statsChildren.length > 1) {
+                    statsChildren[1].textContent = `💻 ${profileOccupation}`;
+                }
+            }
         }
     </script>
 
     <!-- 核心配置和功能 -->
     <script>
-        // 核心配置
-        const SECRET_KEY = "123456"; // 密码验证
+        /**
+         * 核心配置
+         * @description 网站的核心配置参数和DOM元素引用
+         */
+        // 密码验证密钥
+        const SECRET_KEY = "123456"; 
+        // 历史记录最大数量
         const MAX_HISTORY = 10;
-        // DOM 元素
+        
+        /**
+         * DOM 元素引用
+         * @description 缓存常用的DOM元素，提高访问效率
+         */
         const bodyEl = document.body;
         const settingModal = document.getElementById('settingModal');
         const lightBgUrlInput = document.getElementById('lightBgUrl');
         const darkBgUrlInput = document.getElementById('darkBgUrl');
         const lightHistoryList = document.getElementById('lightHistoryList');
         const darkHistoryList = document.getElementById('darkHistoryList');
+        const loginPage = document.getElementById('login-page');
+        const pwdInput = document.getElementById('pwd');
+        const rememberPwd = document.getElementById('rememberPwd');
+        const autoLogin = document.getElementById('autoLogin');
+        const errorEl = document.getElementById('error');
 
-        // 初始化
-        window.onload = function() {
-            // 验证登录状态
-            const isLogin = localStorage.getItem('isLogin') === 'true';
-            if (!isLogin) {
-                console.log('用户未登录');
+        /**
+         * 本地存储管理工具
+         * @description 提供统一的本地存储操作接口，包含错误处理
+         */
+        const StorageManager = {
+            /**
+             * 存储数据
+             * @param {string} key - 存储键名
+             * @param {string} value - 存储值
+             * @returns {boolean} - 存储是否成功
+             */
+            setItem(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                    return true;
+                } catch (error) {
+                    console.error('存储数据失败:', error);
+                    return false;
+                }
+            },
+
+            /**
+             * 获取数据
+             * @param {string} key - 存储键名
+             * @param {*} defaultValue - 默认值
+             * @returns {*} - 存储值或默认值
+             */
+            getItem(key, defaultValue = null) {
+                try {
+                    const value = localStorage.getItem(key);
+                    return value !== null ? value : defaultValue;
+                } catch (error) {
+                    console.error('获取数据失败:', error);
+                    return defaultValue;
+                }
+            },
+
+            /**
+             * 移除数据
+             * @param {string} key - 存储键名
+             * @returns {boolean} - 移除是否成功
+             */
+            removeItem(key) {
+                try {
+                    localStorage.removeItem(key);
+                    return true;
+                } catch (error) {
+                    console.error('移除数据失败:', error);
+                    return false;
+                }
+            },
+
+            /**
+             * 存储对象
+             * @param {string} key - 存储键名
+             * @param {object} obj - 存储对象
+             * @returns {boolean} - 存储是否成功
+             */
+            setObject(key, obj) {
+                try {
+                    const jsonString = JSON.stringify(obj);
+                    return this.setItem(key, jsonString);
+                } catch (error) {
+                    console.error('存储对象失败:', error);
+                    return false;
+                }
+            },
+
+            /**
+             * 获取对象
+             * @param {string} key - 存储键名
+             * @param {object} defaultValue - 默认值
+             * @returns {object} - 存储对象或默认值
+             */
+            getObject(key, defaultValue = {}) {
+                try {
+                    const jsonString = this.getItem(key);
+                    return jsonString ? JSON.parse(jsonString) : defaultValue;
+                } catch (error) {
+                    console.error('获取对象失败:', error);
+                    return defaultValue;
+                }
             }
-            
-            // 加载头像设置
-            loadAvatar();
-            
-            // 加载音乐播放器
-            loadMusicPlayer();
         };
 
-        // 昼夜模式切换
-        function toggleMode() {
-            const isDark = document.documentElement.classList.toggle('dark-mode');
-            const bodyEl = document.body;
-            if (isDark) {
-                bodyEl.classList.remove('hope-ui-light');
-                bodyEl.classList.add('hope-ui-dark');
-                document.documentElement.classList.add('dark-mode');
-                // 设置夜间模式图标
-                const modeIcon = document.getElementById('modeIcon');
-                if (modeIcon) {
-                    modeIcon.className = 'fas fa-moon';
-                }
-            } else {
-                bodyEl.classList.remove('hope-ui-dark');
-                bodyEl.classList.add('hope-ui-light');
-                document.documentElement.classList.remove('dark-mode');
-                // 设置白天模式图标
-                const modeIcon = document.getElementById('modeIcon');
-                if (modeIcon) {
-                    modeIcon.className = 'fas fa-sun';
-                }
+        /**
+         * 简单的哈希函数
+         * @description 用于密码加密存储，将字符串转换为哈希值
+         * @param {string} str - 要哈希的字符串
+         * @returns {string} - 哈希后的字符串
+         */
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // 转换为32位整数
             }
-            localStorage.setItem('darkMode', isDark);
+            return hash.toString(36);
         }
 
-        // 设置弹窗相关
+        /**
+         * 页面初始化函数
+         * @description 页面加载完成后执行的初始化逻辑
+         */
+        window.onload = function() {
+            // 验证登录状态
+            const isLogin = StorageManager.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                // 显示登录页面
+                loginPage.style.display = 'flex';
+                // 读取记住的密码状态
+                const savedPwd = StorageManager.getItem('savedPwd');
+                if (savedPwd) {
+                    rememberPwd.checked = true;
+                }
+                // 自动聚焦到密码输入框
+                pwdInput.focus();
+                // 添加回车键确认功能
+                pwdInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        login();
+                    }
+                });
+                // 自动登录暂时禁用，因为现在存储的是哈希密码
+                // 如需启用自动登录，需要修改验证逻辑
+            } else {
+                // 隐藏登录页面
+                loginPage.style.display = 'none';
+                // 加载头像设置
+                loadAvatar();
+                // 加载个人简介
+                updateProfileDisplay();
+                // 加载音乐播放器
+                loadMusicPlayer();
+                // 更新工具网格
+                updateToolsGrid();
+            }
+        };
+        
+        /**
+         * 登录核心逻辑
+         * @description 处理用户登录验证和状态管理
+         */
+        function login() {
+            // 获取并验证密码
+            const inputPwd = pwdInput.value.trim();
+            if (inputPwd !== SECRET_KEY) {
+                errorEl.textContent = '密码错误，请重试！';
+                pwdInput.style.animation = 'shake 0.5s ease';
+                setTimeout(() => pwdInput.style.animation = '', 500);
+                return;
+            }
+
+            // 验证通过：存储登录状态
+            StorageManager.setItem('isLogin', 'true'); // 登录状态标记
+            if (rememberPwd.checked) {
+                const hashedPwd = simpleHash(inputPwd); // 哈希处理后存储
+                StorageManager.setItem('savedPwd', hashedPwd); // 记住密码
+            } else {
+                StorageManager.removeItem('savedPwd');
+            }
+            StorageManager.setItem('autoLogin', autoLogin.checked); // 自动登录标记
+
+            // 隐藏登录页面，显示主页
+            loginPage.style.display = 'none';
+            // 加载头像设置
+            loadAvatar();
+            // 加载个人简介
+            updateProfileDisplay();
+            // 加载音乐播放器
+            loadMusicPlayer();
+            // 更新工具网格
+            updateToolsGrid();
+        }
+        
+        /**
+         * 清除输入
+         * @description 清除密码输入框和错误提示
+         */
+        function clearInput() {
+            pwdInput.value = '';
+            errorEl.textContent = '';
+        }
+        
+        /**
+         * 清除缓存
+         * @description 清除本地存储中的缓存数据
+         */
+        function clearCache() {
+            StorageManager.removeItem('savedPwd');
+            StorageManager.removeItem('autoLogin');
+            StorageManager.removeItem('lightBgHistory');
+            StorageManager.removeItem('darkBgHistory');
+            StorageManager.removeItem('darkMode');
+            clearInput();
+            alert('缓存已清空！');
+        }
+
+        /**
+         * 处理登录链接点击
+         * @description 处理登录链接的点击事件，根据登录状态执行不同操作
+         */
+        function handleLoginLink() {
+            const isLogin = StorageManager.getItem('isLogin') === 'true';
+            if (!isLogin) {
+                // 显示登录页面
+                loginPage.style.display = 'flex';
+                // 读取记住的密码状态
+                const savedPwd = StorageManager.getItem('savedPwd');
+                if (savedPwd) {
+                    rememberPwd.checked = true;
+                }
+                // 自动聚焦到密码输入框
+                pwdInput.focus();
+                // 添加回车键确认功能
+                pwdInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        login();
+                    }
+                });
+            } else {
+                // 已登录状态，询问是否退出登录
+                if (confirm('您已登录，是否要退出登录？')) {
+                    logout();
+                }
+            }
+        }
+
+        /**
+         * 昼夜模式切换
+         * @description 切换网站的昼夜模式
+         */
+        function toggleMode() {
+            ModeManager.toggleMode();
+        }
+
+        /**
+         * 设置弹窗相关
+         * @description 处理背景设置弹窗的显示和关闭
+         */
         function openSettingModal() {
-            settingModal.style.display = 'flex';
+            openModal('settingModal');
         }
         function closeSettingModal() {
-            settingModal.style.display = 'none';
+            closeModal('settingModal');
         }
         function saveBgSettings() {
             alert('背景设置已保存！');
-            closeSettingModal();
+            closeModal('settingModal');
         }
         
-        // 退出登录逻辑
+        /**
+         * 退出登录逻辑
+         * @description 处理用户退出登录的逻辑
+         */
         function logout() {
-            localStorage.removeItem('isLogin');
-            window.location.href = 'login.html';
+            StorageManager.removeItem('isLogin');
+            // 显示登录页面
+            loginPage.style.display = 'flex';
+            // 重置密码输入
+            clearInput();
         }
 
-        // 展开菜单功能
+        /**
+         * 展开菜单功能
+         * @description 切换设置菜单的显示和隐藏
+         */
         function toggleMenu() {
             const menuDropdown = document.getElementById('menuDropdown');
             const menuButton = document.querySelector('.menu-button');
@@ -1350,33 +2175,38 @@
             }
         }
         
-        // 头像设置相关函数
+        /**
+         * 头像设置相关函数
+         * @description 处理头像设置的显示、保存和加载
+         */
         function openAvatarModal() {
-            const avatarModal = document.getElementById('avatarModal');
             const avatarUrlInput = document.getElementById('avatarUrl');
             // 加载当前头像链接
-            const currentAvatar = localStorage.getItem('avatarUrl');
+            const currentAvatar = StorageManager.getItem('avatarUrl');
             if (currentAvatar) {
                 avatarUrlInput.value = currentAvatar;
             }
-            avatarModal.style.display = 'flex';
+            openModal('avatarModal');
         }
         
         function closeAvatarModal() {
-            const avatarModal = document.getElementById('avatarModal');
-            avatarModal.style.display = 'none';
+            closeModal('avatarModal');
         }
         
         function saveAvatarSettings() {
             const avatarUrl = document.getElementById('avatarUrl').value;
-            localStorage.setItem('avatarUrl', avatarUrl);
+            StorageManager.setItem('avatarUrl', avatarUrl);
             loadAvatar();
             closeAvatarModal();
             alert('头像设置已保存！');
         }
         
+        /**
+         * 加载头像
+         * @description 加载并显示用户设置的头像
+         */
         function loadAvatar() {
-            const avatarUrl = localStorage.getItem('avatarUrl');
+            const avatarUrl = StorageManager.getItem('avatarUrl');
             const headerAvatar = document.getElementById('headerAvatar');
             const profileAvatars = document.querySelectorAll('.profile-avatar');
             
@@ -1397,31 +2227,36 @@
             }
         }
         
-        // 音乐配置相关函数
+        /**
+         * 音乐配置相关函数
+         * @description 处理音乐播放器的配置和加载
+         */
         function openMusicModal() {
-            const musicModal = document.getElementById('musicModal');
             const playlistIdInput = document.getElementById('playlistId');
             // 加载当前歌单ID
-            const currentPlaylistId = localStorage.getItem('playlistId') || '825858380';
+            const currentPlaylistId = StorageManager.getItem('playlistId') || '825858380';
             playlistIdInput.value = currentPlaylistId;
-            musicModal.style.display = 'flex';
+            openModal('musicModal');
         }
         
         function closeMusicModal() {
-            const musicModal = document.getElementById('musicModal');
-            musicModal.style.display = 'none';
+            closeModal('musicModal');
         }
         
         function saveMusicSettings() {
             const playlistId = document.getElementById('playlistId').value;
-            localStorage.setItem('playlistId', playlistId);
+            StorageManager.setItem('playlistId', playlistId);
             loadMusicPlayer();
             closeMusicModal();
             alert('音乐设置已保存！');
         }
         
+        /**
+         * 加载音乐播放器
+         * @description 加载并初始化音乐播放器
+         */
         function loadMusicPlayer() {
-            const playlistId = localStorage.getItem('playlistId') || '825858380';
+            const playlistId = StorageManager.getItem('playlistId') || '825858380';
             const musicPlayer = document.getElementById('musicPlayer');
             // 重新生成音乐播放器
             musicPlayer.innerHTML = `<meting-js fixed="true" autoplay="false" theme="#6474db" list-folded="true" server="netease" type="playlist" id="${playlistId}"></meting-js>`;
