@@ -699,6 +699,30 @@ permalink: /home/
             }
         }
 
+        /* 登录图标容器：控制登录图标的固定定位 */
+        .login-icon-container {
+            position: fixed; /* 固定定位 */
+            bottom: 80px; /* 距离底部72px，在设置图标上方20px */
+            right: 35px; /* 距离右侧35px */
+            z-index: 102; /* 层级为102，确保显示在搜索框和时间信息上方 */
+            width: 32px; /* 宽度为32px */
+            height: 32px; /* 高度为32px */
+            user-select: none; /* 禁止文本选择 */
+        }
+        
+        /* 登录图标：控制登录图标的样式 */
+        .login-icon {
+            width: 100%; /* 宽度为100% */
+            height: 100%; /* 高度为100% */
+        }
+        
+        /* 登录图标图片：控制登录图标图片的样式 */
+        .login-icon img {
+            width: 100%; /* 宽度为100% */
+            height: 100%; /* 高度为100% */
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0)); /* 图片阴影效果 */
+        }
+        
         /* 设置图标容器：控制设置图标的固定定位 */
         .gear-icon-container {
             position: fixed; /* 固定定位 */
@@ -708,6 +732,18 @@ permalink: /home/
             width: 32px; /* 宽度为32px */
             height: 32px; /* 高度为32px */
             user-select: none; /* 禁止文本选择 */
+        }
+        
+        /* 登录页面容器：控制登录页面的显示和隐藏 */
+        .login-page-container {
+            position: fixed; /* 固定定位 */
+            top: 0; /* 顶部定位为0 */
+            left: 0; /* 左侧定位为0 */
+            width: 100%; /* 宽度为100% */
+            height: 100%; /* 高度为100% */
+            z-index: 2000; /* 层级为2000，确保显示在所有元素上方 */
+            display: none; /* 初始状态为隐藏 */
+            background: white; /* 背景颜色为白色 */
         }
         
         /* 设置图标：控制设置图标的旋转效果 */
@@ -1648,6 +1684,18 @@ permalink: /home/
                 }
             });
         }
+        
+        // 切换登录页面的显示和隐藏
+        function toggleLoginPage() {
+            const loginPageContainer = document.getElementById('loginPageContainer');
+            if (loginPageContainer.style.display === 'none' || loginPageContainer.style.display === '') {
+                // 显示登录页面
+                loginPageContainer.style.display = 'block';
+            } else {
+                // 隐藏登录页面
+                loginPageContainer.style.display = 'none';
+            }
+        }
 
         // 更新壁纸效果
         function updateWallpaperEffects() {
@@ -1794,11 +1842,23 @@ permalink: /home/
         }
     </script>
     
+    <!-- 登录图标：页面右下角的登录图标，点击切换到登录页面 -->
+    <div class="login-icon-container clickable" onclick="toggleLoginPage()">
+        <div class="login-icon">
+            <img src="https://images.icon-icons.com/2575/PNG/512/homepage_home_house_icon_153873.png" alt="登录">
+        </div>
+    </div>
+    
     <!-- 设置图标：页面右下角的设置图标，带有旋转动画，点击打开设置 -->
     <div class="gear-icon-container clickable" onclick="openSettings()">
         <div class="gear-icon">
             <img src="https://images.icon-icons.com/1880/PNG/512/iconfinder-settings-4341324_120534.png" alt="设置">
         </div>
+    </div>
+    
+    <!-- 登录页面容器：用于预加载和显示登录页面 -->
+    <div class="login-page-container" id="loginPageContainer">
+        <iframe src="https://wwa.leeyuchen.top/login/" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 </body>
 </html>
