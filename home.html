@@ -8,6 +8,12 @@ permalink: /home/
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>leeyuchen</title>
     <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css">
+    <!--音乐播放器所用的文件-->
+    <!-- require APlayer -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <!-- require MetingJS -->
+    <script src="https://npm.elemecdn.com/meting@2.0.1/dist/Meting.min.js"></script>
     <style>
         /* 全局重置：重置所有元素的默认样式，确保跨浏览器一致性 */
         * {
@@ -699,12 +705,25 @@ permalink: /home/
             }
         }
 
+        /*音乐播放器进一步进行隐藏 需要就加不需要就不用加*/
+         .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+            left: -66px !important;
+            z-index: 9999 !important;
+        }
+        .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+            left: 0 !important;
+            z-index: 9999 !important;
+        }
+        .aplayer {
+            z-index: 9999 !important;
+        }
+
         /* 登录图标容器：控制登录图标的固定定位 */
         .login-icon-container {
             position: fixed; /* 固定定位 */
             bottom: 80px; /* 距离底部72px，在设置图标上方20px */
             right: 35px; /* 距离右侧35px */
-            z-index: 102; /* 层级为102，确保显示在搜索框和时间信息上方 */
+            z-index: 9999; /* 层级为9999，与播放器一致 */
             width: 32px; /* 宽度为32px */
             height: 32px; /* 高度为32px */
             user-select: none; /* 禁止文本选择 */
@@ -728,7 +747,7 @@ permalink: /home/
             position: fixed; /* 固定定位 */
             bottom: 35px; /* 距离底部35px */
             right: 35px; /* 距离右侧35px */
-            z-index: 102; /* 层级为102，确保显示在搜索框和时间信息上方 */
+            z-index: 9999; /* 层级为9999，与播放器一致 */
             width: 32px; /* 宽度为32px */
             height: 32px; /* 高度为32px */
             user-select: none; /* 禁止文本选择 */
@@ -773,6 +792,16 @@ permalink: /home/
     <!-- 背景容器：用于显示页面背景图片 -->
     <div class="background-container" id="backgroundContainer">
         <img src="" alt="背景"> <!-- 背景图片，初始为空，通过JavaScript设置 -->
+    </div>
+    
+    <!--延迟加载-->
+    <!--如果要写自定义内容建议都加到这个延迟加载的范围内-->
+    <div id="customize" style="display: none;">
+        <div>
+            <!--音乐播放器server参数支持的值：netease（网易云）tencent（QQ音乐）kuwo（酷我）kugou （酷狗）xiami （虾米）-->
+            <meting-js fixed="true" theme="#409EFF" mini="true" autoplay="true" list-folded="false" preload="metadata" server="netease" type="playlist" list-max-height="300px" order="random" volume="0.5" id="825858380" mutex="true"></meting-js>
+            <br />
+        </div>
     </div>
 
     <!-- 主容器：包含时间显示和搜索功能的主要内容区域 -->
@@ -1040,6 +1069,17 @@ permalink: /home/
             updateTime(); // 更新时间
             // 使用变量存储定时器ID，以便在需要时清除
             window.updateTimeInterval = setInterval(updateTime, 1000); // 每秒更新时间
+            
+            // 延迟加载自定义内容（音乐播放器）
+            let interval = setInterval(() => {
+                if (document.querySelector('.main-container') || document.querySelector('.background-container') || document.querySelector('.search-container')) {
+                    const customize = document.getElementById('customize');
+                    if (customize) {
+                        customize.style.display = 'block';
+                    }
+                    clearInterval(interval);
+                }
+            }, 200); // 每200毫秒检查一次页面状态
             
             // 添加ESC键支持
             document.addEventListener('keydown', function(e) {
