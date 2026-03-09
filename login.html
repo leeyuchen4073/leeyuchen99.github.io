@@ -8,7 +8,7 @@ permalink: /login/
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - leeyuchen</title>
     <link rel="preload" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" as="style" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css">
+    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" crossorigin="anonymous">
     <link rel="preload" href="https://wp.upx8.com/api.php" as="image">
     <link rel="preload" href="https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg" as="image">
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
@@ -70,21 +70,43 @@ permalink: /login/
             border: 0;
         }
         
-        .hope-ui-light,
-        .hope-ui-dark {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
+        /* 背景容器 */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transform: scale(1.25);
+            transition: all 1s ease;
+        }
+        
+        .background-container.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .background-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease, filter 1s ease;
+            filter: blur(10px) brightness(0.8);
+            transform: translateZ(0);
+            will-change: transform, filter;
+        }
+        
+        .background-container.loaded img {
+            filter: blur(0px) brightness(1);
         }
         
         .hope-ui-light {
-            background-image: var(--light-bg-image) !important;
             color: #2d3748;
         }
         
         .hope-ui-dark {
-            background-image: var(--dark-bg-image) !important;
             color: #ffffff;
         }
         
@@ -902,6 +924,10 @@ permalink: /login/
     </style>
 </head>
 <body class="hope-ui-light">
+    <!-- 背景容器 -->
+    <div class="background-container" id="backgroundContainer">
+        <img src="https://wp.upx8.com/api.php" alt="背景">
+    </div>
     <div class="login-container">
         <div class="login-box">
             <div class="setting-btn" onclick="openBgModal()">⚙️</div>
@@ -999,8 +1025,16 @@ permalink: /login/
         
         document.addEventListener('DOMContentLoaded', initElements);
         
+        // 默认背景图URL，用于直接使用浏览器缓存
+        const DEFAULT_LIGHT_BG = 'https://wp.upx8.com/api.php';
+        const DEFAULT_DARK_BG = 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
+        
         const ImageCache = {
-            initDB() {
+            db: null,
+            
+            async initDB() {
+                if (this.db) return this.db;
+                
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open('BackgroundImageCache', 1);
                     
@@ -1012,7 +1046,8 @@ permalink: /login/
                     };
                     
                     request.onsuccess = function(event) {
-                        resolve(event.target.result);
+                        ImageCache.db = event.target.result;
+                        resolve(ImageCache.db);
                     };
                     
                     request.onerror = function(event) {
@@ -1084,13 +1119,24 @@ permalink: /login/
             }
         };
         
+        // 检查是否为默认背景图
+        function isDefaultBackground(url) {
+            return url === DEFAULT_LIGHT_BG || url === DEFAULT_DARK_BG;
+        }
+        
         async function loadBackgroundImage(url) {
-            const cachedImage = await ImageCache.getImage(url);
-            if (cachedImage) {
-                const blobUrl = URL.createObjectURL(cachedImage.blob);
-                return blobUrl;
-            } else {
-                try {
+            // 对于默认背景图，直接使用原始URL，利用浏览器缓存
+            if (isDefaultBackground(url)) {
+                return url;
+            }
+            
+            // 对于自定义背景图，使用缓存
+            try {
+                const cachedImage = await ImageCache.getImage(url);
+                if (cachedImage) {
+                    const blobUrl = URL.createObjectURL(cachedImage.blob);
+                    return blobUrl;
+                } else {
                     const response = await fetch(url);
                     if (response.ok) {
                         const blob = await response.blob();
@@ -1098,32 +1144,38 @@ permalink: /login/
                         const blobUrl = URL.createObjectURL(blob);
                         return blobUrl;
                     }
-                } catch (error) {
-                    console.log('加载图片失败:', error);
                 }
+            } catch (error) {
+                console.log('加载图片失败:', error);
             }
             
             return url;
         }
         
+        // 延迟初始化缓存和清理操作
+        function initCacheAsync() {
+            // 延迟执行缓存初始化和清理，不阻塞页面加载
+            setTimeout(async () => {
+                try {
+                    const lightBgImage = localStorage.getItem('lightBgImage') || DEFAULT_LIGHT_BG;
+                    const darkBgImage = localStorage.getItem('darkBgImage') || DEFAULT_DARK_BG;
+                    
+                    // 并行缓存两个背景图
+                    await Promise.all([
+                        loadBackgroundImage(lightBgImage),
+                        loadBackgroundImage(darkBgImage)
+                    ]);
+                    
+                    // 清理过期缓存
+                    await ImageCache.cleanup();
+                } catch (e) {
+                    console.log('背景图缓存操作失败:', e);
+                }
+            }, 1000); // 延迟1秒执行
+        }
+        
         (function() {
             try {
-                const lightBgImage = localStorage.getItem('lightBgImage') || 'https://wp.upx8.com/api.php';
-                const darkBgImage = localStorage.getItem('darkBgImage') || 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
-                
-                ImageCache.cleanup();
-                
-                async function cacheBackgrounds() {
-                    try {
-                        await loadBackgroundImage(lightBgImage);
-                        await loadBackgroundImage(darkBgImage);
-                    } catch (e) {
-                        console.log('背景图缓存失败');
-                    }
-                }
-                
-                cacheBackgrounds();
-                
                 const isDark = localStorage.getItem('darkMode') === 'true';
                 
                 function setMode() {
@@ -1152,11 +1204,65 @@ permalink: /login/
                 document.addEventListener('DOMContentLoaded', function() {
                     initElements();
                     setMode();
+                    initializeBackground();
+                    // 页面加载完成后初始化缓存
+                    initCacheAsync();
                 });
             } catch (error) {
                 console.log('模式设置读取失败，使用默认白天模式');
             }
         })();
+        
+        // 初始化背景
+        function initializeBackground() {
+            const backgroundContainer = document.getElementById('backgroundContainer');
+            const backgroundImg = backgroundContainer.querySelector('img');
+            
+            // 根据当前模式设置正确的背景图片
+            const isDark = document.body.classList.contains('dark-mode');
+            const lightBgImage = localStorage.getItem('lightBgImage') || DEFAULT_LIGHT_BG;
+            const darkBgImage = localStorage.getItem('darkBgImage') || DEFAULT_DARK_BG;
+            const initialUrl = isDark ? darkBgImage : lightBgImage;
+            
+            // 直接使用原始URL设置图片，利用浏览器缓存
+            if (isDefaultBackground(initialUrl)) {
+                backgroundImg.src = initialUrl;
+                
+                // 图片加载完成后开始动画
+                backgroundImg.onload = function() {
+                    backgroundContainer.classList.add('loaded');
+                };
+                
+                // 如果图片已经加载完成（缓存），直接触发动画
+                if (backgroundImg.complete) {
+                    backgroundImg.onload();
+                }
+            } else {
+                // 对于自定义背景图，使用缓存
+                loadBackgroundImage(initialUrl).then(blobUrl => {
+                    backgroundImg.src = blobUrl;
+                    
+                    backgroundImg.onload = function() {
+                        backgroundContainer.classList.add('loaded');
+                    };
+                    
+                    if (backgroundImg.complete) {
+                        backgroundImg.onload();
+                    }
+                }).catch(error => {
+                    console.error('加载背景图片失败:', error);
+                    backgroundImg.src = initialUrl;
+                    
+                    backgroundImg.onload = function() {
+                        backgroundContainer.classList.add('loaded');
+                    };
+                    
+                    if (backgroundImg.complete) {
+                        backgroundImg.onload();
+                    }
+                });
+            }
+        }
         
         function showToast(message, isError = false) {
             const fragment = document.createDocumentFragment();
@@ -1355,6 +1461,50 @@ permalink: /login/
                         elements.modeIcon = modeIcon;
                         modeIcon.textContent = isDark ? '🌙' : '☀️';
                     }
+                }
+                
+                // 更新背景容器中的图片
+                const backgroundContainer = document.getElementById('backgroundContainer');
+                const backgroundImg = backgroundContainer.querySelector('img');
+                const lightBgImage = localStorage.getItem('lightBgImage') || DEFAULT_LIGHT_BG;
+                const darkBgImage = localStorage.getItem('darkBgImage') || DEFAULT_DARK_BG;
+                const newUrl = isDark ? darkBgImage : lightBgImage;
+                
+                // 重置背景容器状态
+                backgroundContainer.classList.remove('loaded');
+                backgroundImg.style.opacity = '0';
+                backgroundImg.style.transform = 'scale(1.25)';
+                backgroundImg.style.filter = 'blur(10px) brightness(0.8)';
+                
+                // 直接使用原始URL设置图片，利用浏览器缓存
+                if (isDefaultBackground(newUrl)) {
+                    backgroundImg.src = newUrl;
+                    backgroundImg.onload = function() {
+                        backgroundContainer.classList.add('loaded');
+                        backgroundImg.style.opacity = '1';
+                        backgroundImg.style.transform = 'scale(1)';
+                        backgroundImg.style.filter = 'blur(0px) brightness(1)';
+                    };
+                } else {
+                    // 对于自定义背景图，使用缓存
+                    loadBackgroundImage(newUrl).then(blobUrl => {
+                        backgroundImg.src = blobUrl;
+                        backgroundImg.onload = function() {
+                            backgroundContainer.classList.add('loaded');
+                            backgroundImg.style.opacity = '1';
+                            backgroundImg.style.transform = 'scale(1)';
+                            backgroundImg.style.filter = 'blur(0px) brightness(1)';
+                        };
+                    }).catch(error => {
+                        console.error('加载背景图片失败:', error);
+                        backgroundImg.src = newUrl;
+                        backgroundImg.onload = function() {
+                            backgroundContainer.classList.add('loaded');
+                            backgroundImg.style.opacity = '1';
+                            backgroundImg.style.transform = 'scale(1)';
+                            backgroundImg.style.filter = 'blur(0px) brightness(1)';
+                        };
+                    });
                 }
                 
                 localStorage.setItem('darkMode', isDark.toString());
@@ -1585,6 +1735,27 @@ permalink: /login/
                     localStorage.setItem('darkBgImage', darkUrl);
                     manageHistory(darkUrl, 'darkBgHistory');
                 }
+                
+                // 更新背景容器中的图片
+                const backgroundContainer = document.getElementById('backgroundContainer');
+                const backgroundImg = backgroundContainer.querySelector('img');
+                const isDark = document.body.classList.contains('dark-mode');
+                const newUrl = isDark ? darkUrl || 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg' : lightUrl || 'https://wp.upx8.com/api.php';
+                
+                // 重置背景容器状态
+                backgroundContainer.classList.remove('loaded');
+                backgroundImg.style.opacity = '0';
+                backgroundImg.style.transform = 'scale(1.25)';
+                backgroundImg.style.filter = 'blur(10px) brightness(0.8)';
+                
+                // 加载新图片
+                backgroundImg.src = newUrl;
+                backgroundImg.onload = function() {
+                    backgroundContainer.classList.add('loaded');
+                    backgroundImg.style.opacity = '1';
+                    backgroundImg.style.transform = 'scale(1)';
+                    backgroundImg.style.filter = 'blur(0px) brightness(1)';
+                };
                 
                 closeBgModal();
                 showToast('背景设置已保存');
