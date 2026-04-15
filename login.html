@@ -2074,7 +2074,7 @@ permalink: /login/
                     const ip = cachedIP.ip;
                     const address = cachedIP.address;
                     const isp = cachedIP.isp;
-                    const welcomeMessage = '欢迎 <a href="http://api.nange.cn/">' + address + '</a> <a href="http://test.ustc.edu.cn/">' + isp + 'IP：</a> <a href="https://ipw.cn/ip/" class="ip-address">' + ip + '</a> 的小伙伴访问本站';
+                    const welcomeMessage = '欢迎 <a href="https://api.nange.cn/">' + address + '</a> <a href="https://test.ustc.edu.cn/">' + isp + 'IP：</a> <a href="https://ipw.cn/ip/" class="ip-address">' + ip + '</a> 的小伙伴访问本站';
                     if (welcomeEl) {
                         welcomeEl.innerHTML = welcomeMessage;
                         welcomeEl.classList.add('loaded');
@@ -2094,7 +2094,7 @@ permalink: /login/
                             const ipData = { ip: ip, address: address, isp: isp };
                             CacheManager.cacheIP(ipData);
                             
-                            const welcomeMessage = '欢迎 <a href="http://api.nange.cn/">' + address + '</a> <a href="http://test.ustc.edu.cn/">' + isp + 'IP：</a> <a href="https://ipw.cn/ip/" class="ip-address">' + ip + '</a> 的小伙伴访问本站';
+                            const welcomeMessage = '欢迎 <a href="https://api.nange.cn/">' + address + '</a> <a href="https://test.ustc.edu.cn/">' + isp + 'IP：</a> <a href="https://ipw.cn/ip/" class="ip-address">' + ip + '</a> 的小伙伴访问本站';
                             
                             if (welcomeEl) {
                                 welcomeEl.innerHTML = welcomeMessage;
