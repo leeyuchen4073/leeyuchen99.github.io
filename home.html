@@ -847,7 +847,7 @@ permalink: /home/
         <!-- 搜索容器：包含搜索框和搜索按钮 -->
         <div class="search-container">
             <button class="engine-btn search-related-btn clickable" id="engineBtn">
-                <img src="https://img.icons8.com/color/48/000000/bing.png" alt="必应" width="20" height="20" loading="lazy">
+                <img src="https://img.icons8.com/color/48/000000/bing.png" alt="必应" width="20" height="20">
             </button> <!-- 引擎切换按钮 -->
             <input type="text" class="search-box" id="searchBox" placeholder="搜点什么吧" autocomplete="off"> <!-- 搜索输入框 -->
             <button class="search-btn search-related-btn clickable" id="searchBtn">🪶</button> <!-- 搜索按钮 -->
@@ -1067,6 +1067,14 @@ permalink: /home/
         document.addEventListener('DOMContentLoaded', function() {
             initializePage(); // 初始化页面
             updateTime(); // 更新时间
+            
+            // 农历请求延后到空闲，不抢首屏带宽
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => getLunarAndHoliday(), { timeout: 3000 });
+            } else {
+                setTimeout(getLunarAndHoliday, 1500);
+            }
+            
             // 使用变量存储定时器ID，以便在需要时清除
             window.updateTimeInterval = setInterval(updateTime, 1000); // 每秒更新时间
             
@@ -1763,7 +1771,18 @@ permalink: /home/
             if (lastLunarDate === dateStr && lunarData) {
                 return lunarData; // 返回缓存的农历信息
             }
-
+            // 从localStorage读当天缓存，key带日期跨天自动失效
+            const cacheKey = 'lunar-' + dateStr;
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                try {
+                    lunarData = JSON.parse(cached);
+                    lastLunarDate = dateStr;
+                    return lunarData;
+                } catch (e) {
+                    localStorage.removeItem(cacheKey);
+                }
+            }
             try {
                 const response = await fetch(`https://uapis.cn/api/v1/misc/holiday-calendar?date=${dateStr}&holiday_type=all&include_nearby=true&nearby_limit=365&timezone=Asia/Shanghai`); // 农历和节假日API，可自定义修改
 
@@ -1815,7 +1834,9 @@ permalink: /home/
                     // 缓存数据和日期
                     lunarData = { lunarInfo, holidayInfo, lastHoliday, nextHoliday };
                     lastLunarDate = dateStr;
-
+                    // 写入localStorage，刷新/重开当天不再请求
+                    try { localStorage.setItem(cacheKey, JSON.stringify(lunarData)); } catch (e) {}
+                    
                     return lunarData;
                 } else {
                     throw new Error('API返回数据格式不正确');
@@ -1885,14 +1906,14 @@ permalink: /home/
     <!-- 登录图标：页面右下角的登录图标，点击切换到登录页面 -->
     <div class="login-icon-container clickable" onclick="toggleLoginPage()">
         <div class="login-icon">
-            <img src="https://images.icon-icons.com/2575/PNG/512/homepage_home_house_icon_153873.png" alt="登录" loading="lazy">
+            <img src="https://images.icon-icons.com/2575/PNG/512/homepage_home_house_icon_153873.png" alt="登录">
         </div>
     </div>
     
     <!-- 设置图标：页面右下角的设置图标，带有旋转动画，点击打开设置 -->
     <div class="gear-icon-container clickable" onclick="openSettings()">
         <div class="gear-icon">
-            <img src="https://images.icon-icons.com/1880/PNG/512/iconfinder-settings-4341324_120534.png" alt="设置" loading="lazy">
+            <img src="https://images.icon-icons.com/1880/PNG/512/iconfinder-settings-4341324_120534.png" alt="设置">
         </div>
     </div>
     
