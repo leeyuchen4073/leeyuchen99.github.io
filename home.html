@@ -1070,13 +1070,6 @@ permalink: /home/
             initializePage(); // 初始化页面
             updateTime(); // 更新时间
             
-            // 农历请求延后到空闲，不抢首屏带宽
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => getLunarAndHoliday(), { timeout: 3000 });
-            } else {
-                setTimeout(getLunarAndHoliday, 1500);
-            }
-            
             // 使用变量存储定时器ID，以便在需要时清除
             window.updateTimeInterval = setInterval(updateTime, 1000); // 每秒更新时间
             
